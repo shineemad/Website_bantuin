@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cari Pekerjaan - bantu.in</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Style Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* --- 1. THEME VARIABLES --- */
+      :root {
+        --bg-body: #ffffff;
+        --bg-alt: #f7f7f7;
+        --bg-dark: #111111;
+        --text-main: #000000;
+        --text-sub: #555555;
+        --border-color: #e0e0e0;
+
+        --max-w: 1280px;
+        --radius-pill: 50px;
+        --radius-card: 16px;
+        --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        --accent-green: #22c55e;
+        --accent-hover: #16a34a;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text-main);
+        background-color: var(--bg-body);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: var(--transition);
+      }
+      ul {
+        list-style: none;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+
+      /* --- ANIMATION --- */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* --- NAVBAR --- */
+      nav {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 20px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid transparent;
+        transition: var(--transition);
+      }
+      nav.scrolled {
+        padding: 15px 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid var(--border-color);
+      }
+      .nav-container {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .nav-menu {
+        display: flex;
+        gap: 32px;
+        margin-left: 40px;
+      }
+      .nav-menu a {
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: #333;
+        position: relative;
+      }
+      .nav-menu a.active {
+        font-weight: 700;
+        color: #000;
+      }
+      .nav-menu a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px;
+        left: 0;
+        background-color: #000;
+        transition: width 0.3s;
+      }
+      .nav-menu a:hover::after,
+      .nav-menu a.active::after {
+        width: 100%;
+      }
+      .nav-actions {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+      .btn-nav-login {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+      .btn-nav-signup {
+        background: #000;
+        color: #fff;
+        padding: 10px 24px;
+        border-radius: var(--radius-pill);
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: var(--transition);
+      }
+      .btn-nav-signup:hover {
+        background: #333;
+        transform: translateY(-2px);
+      }
+
+      /* --- SCROLL TO TOP BUTTON --- */
+      #scrollToTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        z-index: 999;
+        border: none;
+        outline: none;
+        background-color: #000;
+        color: white;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        align-items: center;
+        justify-content: center;
+      }
+      #scrollToTopBtn:hover {
+        background-color: var(--accent-green);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+      }
+
+      /* --- PAGE LAYOUT --- */
+      .page-wrapper {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto 80px;
+      }
+
+      /* --- SECTION 1: HERO SEARCH --- */
+      .search-hero-section {
+        padding: 40px 0 60px;
+        width: 100%;
+      }
+      .search-hero-box {
+        background-color: #f4f4f5;
+        border-radius: 40px;
+        padding: 60px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-content-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 40px;
+        align-items: center;
+      }
+      .hero-left-content {
+        max-width: 100%;
+        z-index: 2;
+        position: relative;
+      }
+
+      /* HERO SLIDER STYLE */
+      .hero-right-image {
+        position: relative;
+        height: 400px;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        background-color: #ddd;
+      }
+      .hero-slider-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease; /* Smooth Transition */
+        opacity: 1;
+      }
+      .hero-slider-img.fade-out {
+        opacity: 0.6;
+        transform: scale(1.05);
+      }
+
+      /* Dots Navigation */
+      .slider-dots {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 8px 12px;
+        border-radius: 20px;
+        backdrop-filter: blur(4px);
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .dot.active {
+        background: white;
+        width: 20px;
+        border-radius: 10px;
+      }
+
+      /* Animated Text Title */
+      .search-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 24px;
+        letter-spacing: -1px;
+        color: #111;
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease;
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .search-title.fade-text {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      .search-input-wrapper {
+        display: flex;
+        align-items: center;
+        background: white;
+        border: 1px solid white;
+        border-radius: 50px;
+        padding: 8px 8px 8px 24px;
+        width: 100%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+      }
+      .search-input-wrapper:focus-within {
+        border-color: #000;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      }
+      .search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        font-family: "Inter";
+        color: #333;
+      }
+      .btn-search {
+        background: #000;
+        color: white;
+        border: none;
+        padding: 14px 32px;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .btn-search:hover {
+        background: #333;
+      }
+
+      /* Tabs Navigation */
+      .hero-tabs {
+        display: flex;
+        gap: 24px;
+        margin-top: 40px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding-bottom: 0;
+      }
+      .tab-link {
+        padding-bottom: 16px;
+        font-weight: 500;
+        color: #666;
+        cursor: pointer;
+        position: relative;
+        font-size: 0.95rem;
+        display: block;
+      }
+      .tab-link:hover {
+        color: #333;
+      }
+      .tab-link.active {
+        color: #000;
+        font-weight: 700;
+      }
+      .tab-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: #000;
+        border-radius: 3px 3px 0 0;
+      }
+
+      /* --- CONTENT AREA --- */
+      .content-grid {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 40px;
+        margin-top: 40px;
+      }
+      .sidebar-box {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 24px;
+        padding: 30px;
+        position: sticky;
+        top: 100px;
+      }
+      .filter-title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: block;
+      }
+      .filter-group {
+        margin-bottom: 30px;
+      }
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+        color: #555;
+        cursor: pointer;
+      }
+      .checkbox-row input {
+        accent-color: #000;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+
+      /* Job Feed */
+      .job-feed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .job-feed-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .job-list-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .job-card {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 20px;
+        padding: 32px;
+        transition: var(--transition);
+        position: relative;
+        cursor: pointer;
+      }
+      .job-card:hover {
+        border-color: #000;
+        transform: translateY(-4px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
+      }
+      .job-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #111;
+        margin: 0;
+        line-height: 1.4;
+        transition: color 0.2s;
+      }
+      .job-card:hover .job-title {
+        color: var(--accent-green);
+      }
+      .btn-save-job {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid #eee;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        transition: var(--transition);
+      }
+      .btn-save-job:hover {
+        background: #f5f5f5;
+        color: var(--accent-green);
+        border-color: var(--accent-green);
+      }
+      .job-meta-row {
+        display: flex;
+        gap: 16px;
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 20px;
+        align-items: center;
+      }
+      .meta-item {
+        font-weight: 500;
+        color: #333;
+      }
+      .separator {
+        width: 4px;
+        height: 4px;
+        background: #ddd;
+        border-radius: 50%;
+      }
+      .job-desc {
+        font-size: 1rem;
+        color: var(--text-sub);
+        line-height: 1.6;
+        margin-bottom: 24px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .tag-container {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+      }
+      .tag-pill {
+        background: #f4f4f5;
+        color: #555;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+      .tag-pill:hover {
+        background: #e4e4e7;
+        color: #000;
+      }
+      .card-footer {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 0.85rem;
+        color: #666;
+        padding-top: 20px;
+        border-top: 1px solid #f5f5f5;
+      }
+      .verified-badge {
+        color: var(--accent-green);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+      }
+      .rating-box {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 700;
+        color: #111;
+      }
+      .rating-stars {
+        color: #ffc107;
+        font-size: 0.8rem;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 40px;
+      }
+      .page-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid #eee;
+        background: white;
+        font-weight: 600;
+        color: #666;
+        transition: var(--transition);
+      }
+      .page-btn.active {
+        background: #000;
+        color: white;
+        border-color: #000;
+      }
+      .page-btn:hover:not(.active) {
+        background: #f5f5f5;
+      }
+
+      /* Modal Styles */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        overflow-y: auto;
+        padding: 20px;
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+      .modal-content {
+        background: white;
+        border-radius: 16px;
+        max-width: 600px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: modalSlideIn 0.3s ease;
+      }
+      @keyframes modalSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .modal-header {
+        padding: 24px;
+        border-bottom: 2px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .modal-header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #111;
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+        transition: color 0.3s;
+      }
+      .modal-close:hover {
+        color: #000;
+      }
+      .modal-body {
+        padding: 24px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #111;
+      }
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #22c55e;
+      }
+      .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+      .form-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        padding: 20px 24px;
+        border-top: 2px solid #e5e7eb;
+      }
+      .btn-cancel {
+        padding: 12px 24px;
+        background: #f3f4f6;
+        color: #374151;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .btn-cancel:hover {
+        background: #e5e7eb;
+      }
+      .btn-submit {
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+      }
+
+      .mobile-filter-btn {
+        display: none;
+        width: 100%;
+        padding: 14px;
+        background: #000;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      footer {
+        background: #000;
+        color: #fff;
+        padding: 80px 0 40px;
+        margin-top: 80px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        margin-bottom: 60px;
+      }
+      .footer-brand h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .footer-links h4 {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+      .footer-links ul li {
+        margin-bottom: 12px;
+      }
+      .footer-links ul li a {
+        color: #888;
+        font-size: 0.9rem;
+      }
+      .footer-bottom {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        border-top: 1px solid #333;
+        padding-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #666;
+        font-size: 0.85rem;
+      }
+      .social-icons a {
+        margin-left: 20px;
+        color: #fff;
+      }
+
+      @media (max-width: 960px) {
+        .hero-content-grid {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+        .hero-left-content {
+          order: 2;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .hero-right-image {
+          order: 1;
+          height: 300px;
+        }
+        .search-hero-box {
+          padding: 40px 24px;
+        }
+        .hero-tabs {
+          justify-content: center;
+        }
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+        .sidebar-box {
+          display: none;
+        }
+        .sidebar-box.active {
+          display: block;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 2000;
+          border-radius: 0;
+          overflow-y: auto;
+        }
+        .mobile-filter-btn {
+          display: block;
+        }
+        .nav-menu {
+          display: none;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SCROLL TO TOP BUTTON -->
+    <button id="scrollToTopBtn" title="Kembali ke Atas">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- NAVBAR -->
+    <nav id="navbar" class="navbar">
+      <div class="nav-container">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <a
+            href="beranda.html"
+            class="nav-logo"
+            style="display: flex; align-items: center; gap: 8px"
+          >
+            <img
+              src="bantuin.svg"
+              alt="bantu.in logo"
+              class="nav-logo-img"
+              style="height: 32px"
+            />
+            <span
+              style="font-weight: 800; font-size: 1.2rem; letter-spacing: -1px"
+            ></span>
+          </a>
+          <div class="nav-menu">
+            <a href="beranda.html">Beranda</a>
+            <a href="cari_talent.html">Cari Talent</a>
+            <a href="cari-pekerjaan.html" class="active">Cari Pekerjaan</a>
+            <a href="enterprise.html">Enterprise</a>
+            <a href="kenapa-kami.html">Kenapa Kami</a>
+          </div>
+        </div>
+        <div class="nav-actions">
+          <a href="pekerjaan-simpan.html" class="btn-icon" title="Disimpan"
+            ><i class="far fa-bookmark"></i
+          ></a>
+          <a href="login.html" class="btn btn-outline">Masuk</a>
+          <a href="select.html" class="btn btn-primary">Daftar</a>
+        </div>
+      </div>
+    </nav>
+
+    <script src="assets/js/error-handler.js"></script>
+    <script src="assets/js/loading-state.js"></script>
+    <script src="assets/js/session-ui.js" defer></script>
+    <div class="page-wrapper">
+      <!-- SECTION 1: HERO SEARCH (Auto Slider) -->
+      <section class="search-hero-section reveal">
+        <div class="search-hero-box">
+          <div class="hero-content-grid">
+            <div class="hero-left-content">
+              <!-- Title Diberi ID untuk Manipulasi JS -->
+              <h1 class="search-title" id="heroTitle">
+                Temukan pekerjaan yang cocok untuk skill Anda.
+              </h1>
+
+              <div class="search-input-wrapper">
+                <i
+                  class="fas fa-search"
+                  style="color: #999; margin-right: 10px"
+                ></i>
+                <input
+                  type="text"
+                  id="searchInput"
+                  class="search-input"
+                  placeholder="Cari pekerjaan (contoh: Desain Logo)"
+                  onkeyup="filterJobs()"
+                />
+                <button class="btn-search" onclick="filterJobs()">Cari</button>
+              </div>
+
+              <div class="hero-tabs">
+                <!-- Active Tab (Pencarian Terbaik) -->
+                <a href="#" class="tab-link active">Pencarian Terbaik</a>
+                <a href="pekerjaan-terbaru.html" class="tab-link">Terbaru</a>
+                <a href="pekerjaan-simpan.html" class="tab-link">Disimpan</a>
+              </div>
+            </div>
+
+            <!-- IMAGE SLIDER -->
+            <div class="hero-right-image" id="imageSlider">
+              <img
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Kolaborasi Tim"
+                id="sliderImg"
+                class="hero-slider-img"
+              />
+
+              <!-- Dots Navigation -->
+              <div class="slider-dots" id="sliderDots">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTENT AREA -->
+      <div class="content-grid">
+        <!-- SIDEBAR FILTER -->
+        <aside class="sidebar-box" id="sidebar">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 20px;
+            "
+          >
+            <h3 style="font-size: 1.2rem; font-weight: 700">Filter</h3>
+            <button
+              onclick="toggleSidebar()"
+              style="
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                display: none;
+              "
+              class="close-sidebar"
+            >
+              &times;
+            </button>
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-title">Kategori</span>
+            <label class="checkbox-row"
+              ><input type="checkbox" value="tekno" onchange="filterJobs()" />
+              Web & IT</label
+            >
+            <label class="checkbox-row"
+              ><input type="checkbox" value="kreatif" onchange="filterJobs()" />
+              Desain & Kreatif</label
+            >
+            <label class="checkbox-row"
+              ><input type="checkbox" value="writing" onchange="filterJobs()" />
+              Penulisan</label
+            >
+            <label class="checkbox-row"
+              ><input type="checkbox" value="admin" onchange="filterJobs()" />
+              Admin Support</label
+            >
+            <label class="checkbox-row"
+              ><input type="checkbox" value="fisik" onchange="filterJobs()" />
+              Jasa Fisik</label
+            >
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-title">Tipe Proyek</span>
+            <label class="checkbox-row"
+              ><input type="checkbox" value="Hourly" onchange="filterJobs()" />
+              Per Jam (Hourly)</label
+            >
+            <label class="checkbox-row"
+              ><input type="checkbox" value="Fixed" onchange="filterJobs()" />
+              Harga Tetap (Fixed)</label
+            >
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-title">Level Pengalaman</span>
+            <label class="checkbox-row"
+              ><input type="checkbox" value="Entry" onchange="filterJobs()" />
+              Pemula</label
+            >
+            <label class="checkbox-row"
+              ><input
+                type="checkbox"
+                value="Intermediate"
+                onchange="filterJobs()"
+              />
+              Menengah</label
+            >
+            <label class="checkbox-row"
+              ><input type="checkbox" value="Expert" onchange="filterJobs()" />
+              Ahli</label
+            >
+          </div>
+        </aside>
+
+        <!-- JOB FEED LIST -->
+        <main>
+          <button class="mobile-filter-btn" onclick="toggleSidebar()">
+            <i class="fas fa-filter"></i> Buka Filter
+          </button>
+
+          <div class="job-feed-header">
+            <h2 class="job-feed-title">Pekerjaan yang mungkin Anda sukai</h2>
+            <div style="display: flex; gap: 16px; align-items: center">
+              <button
+                onclick="openJobModal()"
+                style="
+                  padding: 10px 20px;
+                  background: linear-gradient(135deg, #22c55e, #16a34a);
+                  color: white;
+                  border: none;
+                  border-radius: 8px;
+                  font-weight: 600;
+                  cursor: pointer;
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  transition: all 0.3s ease;
+                  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+                "
+                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(34, 197, 94, 0.4)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(34, 197, 94, 0.3)'"
+              >
+                <i class="fas fa-plus"></i> Buat Pekerjaan Baru
+              </button>
+              <span style="font-size: 0.9rem; color: #666"
+                >Urutkan: <strong>Relevansi</strong></span
+              >
+            </div>
+          </div>
+
+          <div class="job-list-container" id="jobListContainer">
+            <!-- Job Cards Injected Here -->
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination">
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- MODAL FORM PEKERJAAN -->
+    <div id="jobModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-briefcase"></i> Buat Pekerjaan Baru</h2>
+          <button class="modal-close" onclick="closeJobModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form id="createJobForm" onsubmit="handleJobSubmit(event)">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Judul Pekerjaan <span style="color: red">*</span></label>
+              <input
+                type="text"
+                id="jobTitle"
+                placeholder="Contoh: Desain Logo Modern untuk Startup"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Deskripsi <span style="color: red">*</span></label>
+              <textarea
+                id="jobDescription"
+                placeholder="Jelaskan detail pekerjaan, requirements, dan deliverables..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Budget (Rp) <span style="color: red">*</span></label>
+              <input
+                type="number"
+                id="jobBudget"
+                placeholder="5000000"
+                required
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Deadline <span style="color: red">*</span></label>
+              <input type="date" id="jobDeadline" required />
+            </div>
+
+            <div class="form-group">
+              <label>Kategori <span style="color: red">*</span></label>
+              <select id="jobCategory" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="Design">Design</option>
+                <option value="Development">Development</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Writing">Writing</option>
+                <option value="Video">Video & Animation</option>
+                <option value="Music">Music & Audio</option>
+                <option value="Business">Business</option>
+                <option value="Data">Data</option>
+                <option value="Other">Lainnya</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Level <span style="color: red">*</span></label>
+              <select id="jobLevel" required>
+                <option value="">-- Pilih Level --</option>
+                <option value="Entry Level">Entry Level</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Expert">Expert</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Lokasi <span style="color: red">*</span></label>
+              <input
+                type="text"
+                id="jobLocation"
+                placeholder="Jakarta, Indonesia atau Remote"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Tipe Pekerjaan <span style="color: red">*</span></label>
+              <select id="jobType" required>
+                <option value="">-- Pilih Tipe --</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" onclick="closeJobModal()">
+              <i class="fas fa-times"></i> Batal
+            </button>
+            <button type="submit" class="btn-submit">
+              <i class="fas fa-check"></i> Simpan Pekerjaan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h2>bantu.in</h2>
+          <p>
+            Platform #1 di Indonesia untuk menghubungkan bantuan lokal dengan
+            kebutuhan harian dan bisnis.
+          </p>
+        </div>
+        <div class="footer-links">
+          <h4>Klien</h4>
+          <ul>
+            <li><a href="#">Cara Posting</a></li>
+            <li><a href="cari_talent.html">Cari Talent</a></li>
+            <li><a href="enterprise.html">Enterprise</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Talent</h4>
+          <ul>
+            <li><a href="cari-pekerjaan.html">Cari Pekerjaan</a></li>
+            <li><a href="#">Komunitas</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Perusahaan</h4>
+          <ul>
+            <li><a href="kenapa-kami.html">Tentang Kami</a></li>
+            <li><a href="#">Karir</a></li>
+            <li><a href="#">Hubungi Kami</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2025 bantu.in Global Inc.</div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // --- 1. INTERACTIVE HERO SLIDER & TEXT ---
+      const slides = [
+        {
+          img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          text: "Temukan pekerjaan yang cocok untuk skill Anda.",
+        },
+        {
+          img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          text: "Eksplorasi proyek IT & Software terbaru.",
+        },
+        {
+          img: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          text: "Cari peluang di industri kreatif.",
+        },
+        {
+          img: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          text: "Bangun karir profesional Anda sekarang.",
+        },
+      ];
+
+      let currentSlide = 0;
+      const sliderImg = document.getElementById("sliderImg");
+      const heroTitle = document.getElementById("heroTitle"); // Text Header
+      const sliderContainer = document.getElementById("imageSlider");
+      const sliderDotsContainer = document.getElementById("sliderDots");
+      let slideInterval;
+
+      // Setup Dots
+      slides.forEach((_, idx) => {
+        const dot = document.createElement("div");
+        dot.classList.add("dot");
+        if (idx === 0) dot.classList.add("active");
+        dot.addEventListener("click", () => {
+          setSlide(idx);
+          resetTimer();
+        });
+        sliderDotsContainer.appendChild(dot);
+      });
+
+      function updateDots(index) {
+        const dots = document.querySelectorAll(".dot");
+        dots.forEach((d) => d.classList.remove("active"));
+        dots[index].classList.add("active");
+      }
+
+      function setSlide(index) {
+        currentSlide = index;
+        // Fade Out Animation
+        sliderImg.classList.add("fade-out");
+        heroTitle.classList.add("fade-text");
+
+        setTimeout(() => {
+          // Change Content
+          sliderImg.src = slides[currentSlide].img;
+          heroTitle.innerText = slides[currentSlide].text;
+
+          // Fade In Animation
+          sliderImg.onload = () => {
+            sliderImg.classList.remove("fade-out");
+          };
+          heroTitle.classList.remove("fade-text");
+
+          updateDots(currentSlide);
+        }, 300); // Match CSS transition time
+      }
+
+      function nextSlide() {
+        const nextIndex = (currentSlide + 1) % slides.length;
+        setSlide(nextIndex);
+      }
+
+      function startSlide() {
+        slideInterval = setInterval(nextSlide, 2000); // 2000ms = 2 seconds
+      }
+
+      function stopSlide() {
+        clearInterval(slideInterval);
+      }
+
+      function resetTimer() {
+        stopSlide();
+        startSlide();
+      }
+
+      // Start Auto Slide
+      startSlide();
+
+      // Pause on Hover
+      sliderContainer.addEventListener("mouseenter", stopSlide);
+      sliderContainer.addEventListener("mouseleave", startSlide);
+
+      // --- 2. DATA LOADING FROM LOCALSTORAGE & FILTER LOGIC ---
+      console.log("Loading tasks from localStorage...");
+
+      // Load tasks from localStorage
+      function loadTasksFromStorage() {
+        try {
+          const storedTasks = localStorage.getItem("bantuin_tasks");
+          console.log("Raw localStorage data:", storedTasks);
+
+          if (!storedTasks) {
+            console.log("No tasks found in localStorage");
+            return [];
+          }
+
+          const tasks = JSON.parse(storedTasks);
+          console.log("Parsed tasks:", tasks);
+
+          // Convert tasks to job format
+          return tasks.map((task) => {
+            const now = new Date();
+            const uploadDate = new Date(task.uploadDate || task.createdAt);
+            const diffMs = now - uploadDate;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+
+            let timeText = "Baru saja";
+            if (diffMins < 60) {
+              timeText =
+                diffMins <= 1 ? "Baru saja" : diffMins + " menit yang lalu";
+            } else if (diffHours < 24) {
+              timeText = diffHours + " jam yang lalu";
+            } else {
+              timeText = diffDays + " hari yang lalu";
+            }
+
+            // Get client info from localStorage session
+            let clientName = "Anonymous Client";
+            let clientEmail = "client@example.com";
+            let clientLocation = "Indonesia";
+
+            try {
+              const session = JSON.parse(
+                localStorage.getItem("bantuin_session") || "{}"
+              );
+              const profile = JSON.parse(
+                localStorage.getItem("rpl_profile") || "{}"
+              );
+
+              if (task.owner) clientName = task.owner;
+              else if (session.user) clientName = session.user;
+              else if (profile.name) clientName = profile.name;
+
+              if (task.ownerEmail) clientEmail = task.ownerEmail;
+              else if (session.email) clientEmail = session.email;
+              else if (profile.email) clientEmail = profile.email;
+            } catch (e) {
+              console.error("Error loading client info:", e);
+            }
+
+            // Generate tags from description or use default
+            const tags = task.tags || [
+              task.category || "General",
+              task.level || "Intermediate",
+              task.type || "Fixed-price",
+            ];
+
+            return {
+              id: task.id,
+              title: task.title,
+              type: task.type || "Fixed-price",
+              level: task.level || "Intermediate",
+              budget: task.budget || "Negosiasi",
+              time: timeText,
+              isNew: diffHours < 24,
+              desc: task.description || task.desc || "Deskripsi tidak tersedia",
+              tags: tags,
+              client: {
+                name: clientName,
+                email: clientEmail,
+                verified: task.clientVerified || false,
+                stars: task.clientRating || 0,
+                spent: task.clientSpent || "Rp 0",
+                location: task.location || clientLocation,
+              },
+              category: task.category || "tekno",
+              deadline: task.deadline,
+              fileName: task.fileName,
+              status: task.status || "open",
+            };
+          });
+        } catch (err) {
+          console.error("Error loading tasks from localStorage:", err);
+          return [];
+        }
+      }
+
+      // Dummy data for demo (will be combined with localStorage tasks)
+      const dummyJobsData = [
+        {
+          id: 101,
+          title: "Need urgent help: Bug Fix di WordPress Elementor",
+          type: "Hourly",
+          level: "Expert",
+          budget: "Rp 100rb - 200rb / jam",
+          time: "Baru saja",
+          isNew: true,
+          desc: "Website klien kami error setelah update plugin Elementor. Header berantakan di mobile. Butuh fix secepatnya.",
+          tags: ["WordPress", "Elementor", "CSS", "Bug Fix"],
+          client: {
+            verified: true,
+            stars: 4.9,
+            spent: "Rp 50jt+",
+            location: "Jakarta, ID",
+          },
+          category: "tekno",
+        },
+        {
+          id: 102,
+          title: "Jasa Desain Banner Promosi Instagram (3 Feed + 3 Story)",
+          type: "Fixed-price",
+          level: "Entry",
+          budget: "Rp 300.000",
+          time: "5 menit yang lalu",
+          isNew: true,
+          desc: "Dicari desainer grafis pemula/menengah untuk membuat materi promosi produk skincare. Style minimalis dan pastel.",
+          tags: ["Social Media Design", "Canva", "Photoshop"],
+          client: {
+            verified: false,
+            stars: 0,
+            spent: "Rp 0",
+            location: "Bandung, ID",
+          },
+          category: "kreatif",
+        },
+        {
+          id: 103,
+          title: "Dicari: Admin Balas Chat WA untuk Online Shop Fashion",
+          type: "Monthly",
+          level: "Entry",
+          budget: "Rp 2.000.000 / bulan",
+          time: "12 menit yang lalu",
+          isNew: true,
+          desc: "Kerja remote (di rumah). Tugas membalas chat customer dari jam 9 pagi - 5 sore. Syarat: Ramah, teliti, punya laptop/HP yang memadai.",
+          tags: ["Admin", "Customer Service", "WhatsApp"],
+          client: {
+            verified: true,
+            stars: 4.5,
+            spent: "Rp 15jt+",
+            location: "Surabaya, ID",
+          },
+          category: "admin",
+        },
+        {
+          id: 104,
+          title: "Penerjemah Dokumen Legal (Indonesia - Inggris)",
+          type: "Fixed-price",
+          level: "Expert",
+          budget: "Rp 1.500.000",
+          time: "25 menit yang lalu",
+          desc: "Kami membutuhkan penerjemah tersumpah atau berpengalaman untuk menerjemahkan kontrak kerjasama 15 halaman.",
+          tags: ["Translation", "Legal", "English", "Indonesian"],
+          client: {
+            verified: true,
+            stars: 5.0,
+            spent: "Rp 100jt+",
+            location: "Jakarta, ID",
+          },
+          category: "writing",
+        },
+        {
+          id: 105,
+          title: "Bantu Pindahan Kamar Kost (Area Setiabudi)",
+          type: "Fixed-price",
+          level: "Entry",
+          budget: "Rp 250.000",
+          time: "40 menit yang lalu",
+          desc: "Butuh 1 orang untuk bantu angkut barang-barang kost (kardus buku, baju, galon) ke mobil pickup. Lokasi Setiabudi ke Tebet.",
+          tags: ["Jasa Angkut", "Pindahan", "Tenaga Fisik"],
+          client: {
+            verified: true,
+            stars: 5.0,
+            spent: "Rp 2jt+",
+            location: "Jakarta, ID",
+          },
+          category: "fisik",
+        },
+      ];
+
+      // Merge in any jobs posted via profile (stored in localStorage)
+      try {
+        var stored = JSON.parse(localStorage.getItem("bantuin_jobs") || "[]");
+        if (Array.isArray(stored) && stored.length) {
+          var mapped = stored.map(function (j) {
+            return {
+              id: j.id || Date.now(),
+              title: j.title || "(Tanpa Judul)",
+              type: j.type || "Posted",
+              level: j.level || "-",
+              budget: j.budget || "-",
+              time: j.time || "Baru saja",
+              isNew: true,
+              desc: j.company ? "Perusahaan: " + j.company : j.desc || "",
+              tags: j.tags || [],
+              client: j.client || {
+                verified: false,
+                stars: 0,
+                spent: "",
+                location: j.poster || "",
+              },
+              category: j.category || "tekno",
+            };
+          });
+          // prepend so newest user-posted appear first
+          jobsData.unshift.apply(jobsData, mapped);
+        }
+      } catch (err) {
+        console.warn("Could not load stored jobs:", err);
+      }
+
+      const jobListContainer = document.getElementById("jobListContainer");
+
+      if (!jobListContainer) {
+        console.error("❌ jobListContainer element not found!");
+      } else {
+        console.log("✅ jobListContainer found:", jobListContainer);
+      }
+
+      // Get user session info
+      function getUserSession() {
+        try {
+          if (
+            window.RPLAuth &&
+            typeof window.RPLAuth.getProfile === "function"
+          ) {
+            return window.RPLAuth.getProfile();
+          }
+        } catch (e) {}
+        try {
+          var s = JSON.parse(localStorage.getItem("bantuin_session") || "null");
+          if (s) {
+            return {
+              name: s.user || "guest",
+              email: s.email || "",
+              role:
+                s.role || localStorage.getItem("rpl_currentRole") || "client",
+            };
+          }
+        } catch (e) {}
+        return null;
+      }
+
+      // Get saved jobs for current user
+      function getSavedJobs() {
+        var user = getUserSession();
+        if (!user || !user.email) return [];
+        try {
+          var key = "bantuin_saved_jobs_" + user.email;
+          var saved = JSON.parse(localStorage.getItem(key) || "[]");
+          return Array.isArray(saved) ? saved : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      // Save job to user's saved list
+      function toggleSaveJob(jobId) {
+        var user = getUserSession();
+        if (!user || !user.email) {
+          alert("Silakan login terlebih dahulu untuk menyimpan pekerjaan");
+          window.location.href = "login.html";
+          return;
+        }
+
+        var key = "bantuin_saved_jobs_" + user.email;
+        var saved = getSavedJobs();
+        var index = saved.indexOf(jobId);
+
+        if (index > -1) {
+          // Remove from saved
+          saved.splice(index, 1);
+        } else {
+          // Add to saved
+          saved.push(jobId);
+        }
+
+        localStorage.setItem(key, JSON.stringify(saved));
+        renderJobs(currentFilteredJobs); // Re-render to update save buttons
+      }
+
+      // Check if job is saved
+      function isJobSaved(jobId) {
+        return getSavedJobs().includes(jobId);
+      }
+
+      function renderJobs(jobs) {
+        console.log("🎨 renderJobs called with", jobs.length, "jobs");
+
+        if (!jobListContainer) {
+          console.error("❌ Cannot render: jobListContainer is null!");
+          return;
+        }
+
+        currentFilteredJobs = jobs;
+        jobListContainer.innerHTML = "";
+
+        if (jobs.length === 0) {
+          console.log("⚠️ No jobs to display");
+          jobListContainer.innerHTML = `<div style="padding:40px; text-align:center; color:#666;">Tidak ada pekerjaan ditemukan.</div>`;
+          return;
+        }
+
+        console.log("✅ Rendering", jobs.length, "job cards...");
+
+        var user = getUserSession();
+        var savedJobs = getSavedJobs();
+
+        jobs.forEach((job, index) => {
+          const card = document.createElement("div");
+          card.className = "job-card reveal";
+          card.style.animationDelay = `${index * 0.05}s`;
+
+          let clientHtml = job.client.verified
+            ? `<span class="verified-badge"><i class="fas fa-check-circle"></i> Payment verified</span>`
+            : `<span style="color:#999; display:flex; align-items:center; gap:6px;"><i class="far fa-circle"></i> Payment unverified</span>`;
+
+          let starsHtml = "";
+          if (job.client.stars > 0) {
+            starsHtml = `
+                        <div class="rating-box">
+                            <div class="rating-stars">
+                                ${"★".repeat(Math.floor(job.client.stars))}
+                                ${"★"
+                                  .repeat(5 - Math.floor(job.client.stars))
+                                  .replace(
+                                    /★/g,
+                                    '<span style="color:#ddd">★</span>'
+                                  )}
+                            </div>
+                            <span>${job.client.stars}</span>
+                        </div>`;
+          }
+
+          let newBadgeHtml = job.isNew
+            ? `<span class="badge-new">BARU</span>`
+            : "";
+
+          // Check if job is saved
+          var isSaved = isJobSaved(job.id);
+          var saveIcon = isSaved ? "fas fa-heart" : "far fa-heart";
+          var saveColor = isSaved ? "color: #ff4757;" : "";
+
+          card.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="job-title">${job.title}</h3>
+                        <button class="btn-save-job" onclick="toggleSaveJob(${
+                          job.id
+                        })" style="${saveColor}">
+                          <i class="${saveIcon}"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="job-meta-row">
+                        <span class="meta-item">${job.type}</span>
+                        <span class="separator"></span>
+                        <span class="meta-item">${job.level}</span>
+                        <span class="separator"></span>
+                        <span>Est. Budget: ${job.budget}</span>
+                        <span class="separator"></span>
+                        <span style="color:#22C55E; font-weight:600;">${
+                          job.time
+                        }</span>
+                        ${
+                          job.isNew
+                            ? '<span class="separator"></span>' + newBadgeHtml
+                            : ""
+                        }
+                    </div>
+
+                    <div class="job-desc">
+                        ${job.desc}
+                    </div>
+
+                    <div class="tag-container">
+                        ${job.tags
+                          .map((tag) => `<span class="tag-pill">${tag}</span>`)
+                          .join("")}
+                    </div>
+
+                    <div class="card-footer">
+                        ${clientHtml}
+                        ${starsHtml}
+                        <span style="font-weight:600;">${
+                          job.client.spent
+                        } spent</span>
+                        <span><i class="fas fa-map-marker-alt" style="color:#999; margin-right:4px;"></i> ${
+                          job.client.location
+                        }</span>
+                    </div>
+                `;
+          jobListContainer.appendChild(card);
+        });
+
+        console.log("✅ Finished rendering", jobs.length, "job cards");
+
+        setTimeout(() => {
+          const reveals = document.querySelectorAll(".reveal");
+          reveals.forEach((r) => r.classList.add("active"));
+          console.log("✅ Animation applied to", reveals.length, "cards");
+        }, 50);
+      }
+
+      function filterJobs() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const checkedCategories = Array.from(
+          document.querySelectorAll(
+            'input[value="tekno"]:checked, input[value="kreatif"]:checked, input[value="writing"]:checked, input[value="admin"]:checked, input[value="fisik"]:checked'
+          )
+        ).map((cb) => cb.value);
+        const filtered = jobsData.filter((job) => {
+          const matchSearch =
+            job.title.toLowerCase().includes(searchTerm) ||
+            job.desc.toLowerCase().includes(searchTerm);
+          const matchCategory =
+            checkedCategories.length === 0 ||
+            checkedCategories.includes(job.category);
+          return matchSearch && matchCategory;
+        });
+        renderJobs(filtered);
+      }
+
+      // Modal Functions
+      function openJobModal() {
+        document.getElementById("jobModal").classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeJobModal() {
+        document.getElementById("jobModal").classList.remove("active");
+        document.body.style.overflow = "auto";
+        document.getElementById("createJobForm").reset();
+      }
+
+      // Handle Job Form Submit
+      function handleJobSubmit(event) {
+        event.preventDefault();
+        console.log("📝 Creating new job...");
+
+        const currentUser = JSON.parse(
+          localStorage.getItem("bantuin_user") || "{}"
+        );
+        const userEmail = currentUser.email || "anonymous@user.com";
+        const userName = currentUser.name || "Anonymous User";
+
+        const title = document.getElementById("jobTitle").value;
+        const description = document.getElementById("jobDescription").value;
+        const budget = document.getElementById("jobBudget").value;
+        const deadline = document.getElementById("jobDeadline").value;
+        const category = document.getElementById("jobCategory").value;
+        const level = document.getElementById("jobLevel").value;
+        const location = document.getElementById("jobLocation").value;
+        const type = document.getElementById("jobType").value;
+
+        const newJob = {
+          id: "job_" + Date.now(),
+          title: title,
+          description: description,
+          budget: "Rp " + parseInt(budget).toLocaleString("id-ID"),
+          deadline: deadline,
+          category: category,
+          level: level,
+          location: location,
+          type: type,
+          postedBy: userName,
+          postedByEmail: userEmail,
+          postedDate: new Date().toISOString(),
+          status: "open",
+          source: "cari-pekerjaan",
+        };
+
+        console.log("New job object:", newJob);
+
+        // Save to localStorage (bantuin_tasks)
+        let tasks = JSON.parse(localStorage.getItem("bantuin_tasks") || "[]");
+        tasks.unshift(newJob); // Add to beginning
+        localStorage.setItem("bantuin_tasks", JSON.stringify(tasks));
+        console.log("✅ Saved to bantuin_tasks. Total:", tasks.length);
+
+        // Save to user-specific storage
+        const userTasksKey = "bantuin_user_tasks_" + userEmail;
+        let userTasks = JSON.parse(localStorage.getItem(userTasksKey) || "[]");
+        userTasks.unshift(newJob);
+        localStorage.setItem(userTasksKey, JSON.stringify(userTasks));
+        console.log("✅ Saved to", userTasksKey);
+
+        // Save to admin monitoring
+        let adminJobs = JSON.parse(
+          localStorage.getItem("bantuin_admin_jobs") || "[]"
+        );
+        adminJobs.unshift(newJob);
+        localStorage.setItem("bantuin_admin_jobs", JSON.stringify(adminJobs));
+        console.log("✅ Saved to bantuin_admin_jobs");
+
+        // Show success message
+        alert(
+          "✅ Pekerjaan berhasil dibuat!\n\nPekerjaan Anda akan ditampilkan di halaman Pekerjaan Terbaru dan dapat dilihat oleh semua pengguna."
+        );
+
+        // Close modal
+        closeJobModal();
+
+        // Reload jobs to show new job
+        const localTasks = loadTasksFromStorage();
+        const updatedJobsData = [...localTasks, ...dummyJobsData];
+        currentFilteredJobs = updatedJobsData;
+        renderJobs(updatedJobsData);
+
+        // Trigger storage event for other tabs
+        window.dispatchEvent(new Event("storage"));
+
+        console.log("✅ Job creation completed!");
+      }
+
+      // Close modal when clicking outside
+      document.addEventListener("click", function (event) {
+        const modal = document.getElementById("jobModal");
+        if (event.target === modal) {
+          closeJobModal();
+        }
+      });
+
+      // Close modal with Escape key
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeJobModal();
+        }
+      });
+
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+        const closeBtn = document.querySelector(".close-sidebar");
+        if (document.getElementById("sidebar").classList.contains("active")) {
+          closeBtn.style.display = "block";
+        } else {
+          closeBtn.style.display = "none";
+        }
+      }
+
+      // --- 5. SCROLL TO TOP & NAVBAR ---
+      const navbar = document.getElementById("navbar");
+      const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+        if (window.scrollY > 400) {
+          scrollToTopBtn.style.display = "flex";
+        } else {
+          scrollToTopBtn.style.display = "none";
+        }
+      });
+
+      scrollToTopBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveals[i].getBoundingClientRect().top;
+          var elementVisible = 150;
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+          }
+        }
+      }
+      window.addEventListener("scroll", reveal);
+      reveal();
+
+      // Merge localStorage tasks with dummy data immediately
+      console.log("Starting to merge tasks...");
+      const localTasks = loadTasksFromStorage();
+      console.log("Loaded tasks from localStorage:", localTasks.length);
+
+      // Combine: localStorage tasks first (newest), then dummy data
+      const jobsData = [...localTasks, ...dummyJobsData];
+      console.log("Total jobs to display:", jobsData.length);
+
+      // Initialize currentFilteredJobs
+      var currentFilteredJobs = jobsData;
+
+      // Render immediately if DOM is ready, otherwise wait
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          console.log("DOM loaded, rendering jobs...");
+          renderJobs(jobsData);
+          setupStorageListener();
+        });
+      } else {
+        console.log("DOM already loaded, rendering jobs immediately...");
+        renderJobs(jobsData);
+        setupStorageListener();
+      }
+
+      function setupStorageListener() {
+        // Add listener to reload when localStorage changes
+        window.addEventListener("storage", (e) => {
+          if (e.key === "bantuin_tasks") {
+            console.log("Tasks updated in localStorage, reloading...");
+            const updatedTasks = loadTasksFromStorage();
+            const updatedJobsData = [...updatedTasks, ...dummyJobsData];
+            renderJobs(updatedJobsData);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

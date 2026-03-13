@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enterprise - bantu.in</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Style Font (Inter) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* --- 1. THEME VARIABLES --- */
+      :root {
+        --bg-body: #ffffff;
+        --bg-alt: #f7f7f7;
+        --bg-dark: #111111;
+        --text-main: #000000;
+        --text-sub: #555555;
+        --text-light: #a1a1aa;
+        --border-color: #e0e0e0;
+
+        --max-w: 1280px;
+        --radius-pill: 50px;
+        --radius-card: 24px;
+        --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        --accent-green: #22c55e;
+        --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.08);
+        --shadow-hover: 0 30px 60px rgba(0, 0, 0, 0.12);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text-main);
+        background-color: var(--bg-body);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: var(--transition);
+      }
+      ul {
+        list-style: none;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      /* --- TYPOGRAPHY --- */
+      .text-display {
+        font-size: 3.5rem;
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        margin-bottom: 24px;
+        color: #111;
+      }
+      .text-h2 {
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        line-height: 1.2;
+      }
+      .text-h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+      }
+      .text-body {
+        font-size: 1.125rem;
+        color: var(--text-sub);
+        font-weight: 400;
+        line-height: 1.6;
+      }
+      .text-center {
+        text-align: center;
+      }
+
+      /* --- ANIMATION --- */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-delay-1 {
+        transition-delay: 0.1s;
+      }
+      .reveal-delay-2 {
+        transition-delay: 0.2s;
+      }
+      .reveal-delay-3 {
+        transition-delay: 0.3s;
+      }
+
+      /* --- NAVBAR --- */
+      nav {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 20px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid transparent;
+        transition: var(--transition);
+      }
+      nav.scrolled {
+        padding: 15px 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid var(--border-color);
+      }
+      .nav-container {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Logo Style Fix */
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+      }
+      .nav-logo span {
+        font-weight: 800;
+        font-size: 1.4rem;
+        letter-spacing: -1px;
+        color: #000;
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 32px;
+        margin-left: 40px;
+      }
+      .nav-menu a {
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: #333;
+        position: relative;
+      }
+      .nav-menu a.active {
+        font-weight: 700;
+        color: #000;
+      }
+      .nav-menu a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px;
+        left: 0;
+        background-color: #000;
+        transition: width 0.3s;
+      }
+      .nav-menu a:hover::after,
+      .nav-menu a.active::after {
+        width: 100%;
+      }
+
+      .nav-actions {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+      .btn-nav-login {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+      .btn-nav-signup {
+        background: #000;
+        color: #fff;
+        padding: 10px 24px;
+        border-radius: var(--radius-pill);
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: var(--transition);
+      }
+      .btn-nav-signup:hover {
+        background: #333;
+        transform: translateY(-2px);
+      }
+
+      /* --- HERO SECTION (Gray Box) --- */
+      .hero-wrapper {
+        padding: 40px 0 80px;
+        width: 100%;
+      }
+      .hero-container {
+        width: 95%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        background-color: #f4f4f5;
+        border-radius: 40px;
+        padding: 80px 60px;
+        display: flex;
+        align-items: center;
+        gap: 60px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-left {
+        flex: 1;
+        z-index: 2;
+      }
+      .hero-right {
+        flex: 1;
+        position: relative;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .hero-img {
+        width: 100%;
+        max-width: 600px;
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-card);
+        object-fit: cover;
+        height: 500px;
+      }
+
+      .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        border: 1px solid #eee;
+      }
+
+      .btn-hero-primary {
+        background: #000;
+        color: white;
+        padding: 16px 36px;
+        border-radius: 50px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: var(--transition);
+      }
+      .btn-hero-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        background: #222;
+      }
+      .btn-hero-secondary {
+        background: white;
+        color: #000;
+        padding: 16px 36px;
+        border-radius: 50px;
+        font-weight: 600;
+        margin-left: 10px;
+        transition: var(--transition);
+        border: 1px solid transparent;
+      }
+      .btn-hero-secondary:hover {
+        background: #fff;
+        border-color: #ccc;
+      }
+
+      /* --- ENTERPRISE FEATURES GRID (MARGIN FIXED) --- */
+      .section-features {
+        padding: 120px 0;
+        background: white;
+      }
+      .container {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+      }
+
+      .ent-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px; /* Jarak antar kartu diperbesar */
+        margin-top: 80px; /* Jarak dari judul ke kartu diperbesar */
+        padding: 0 20px; /* Padding horizontal agar kartu terluar aman dari tepi */
+      }
+
+      .ent-card {
+        padding: 48px 36px; /* Padding dalam kartu diperbesar */
+        border-radius: 24px;
+        background: #fff;
+        border: 1px solid #eee;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .ent-card:hover {
+        border-color: #000;
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-8px);
+      }
+      .ent-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 0;
+        background: #000;
+        transition: height 0.4s;
+      }
+      .ent-card:hover::before {
+        height: 100%;
+      }
+
+      .ent-icon {
+        width: 64px;
+        height: 64px;
+        background: #f4f4f5;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        margin-bottom: 32px;
+        color: #111;
+        transition: var(--transition);
+      }
+      .ent-card:hover .ent-icon {
+        background: #000;
+        color: #fff;
+      }
+
+      .ent-card h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        line-height: 1.3;
+      }
+      .ent-card p {
+        color: var(--text-sub);
+        font-size: 1.05rem;
+        line-height: 1.7;
+        flex-grow: 1;
+      }
+
+      /* --- SOLUTIONS SPLIT SECTION --- */
+      .section-solutions {
+        padding: 100px 0;
+        background: var(--bg-alt);
+      }
+      .split-layout {
+        display: flex;
+        align-items: center;
+        gap: 80px;
+        margin-bottom: 120px;
+      }
+      .split-layout:last-child {
+        margin-bottom: 0;
+      }
+      .split-layout.reverse {
+        flex-direction: row-reverse;
+      }
+
+      .split-text {
+        flex: 1;
+      }
+      .split-img {
+        flex: 1;
+        position: relative;
+      }
+      .split-img img {
+        border-radius: 24px;
+        box-shadow: var(--shadow-card);
+        width: 100%;
+        transition: transform 0.5s ease;
+      }
+      .split-layout:hover .split-img img {
+        transform: scale(1.02);
+      }
+
+      .check-list {
+        margin-top: 30px;
+      }
+      .check-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        color: #333;
+        font-size: 1.1rem;
+      }
+      .check-item i {
+        color: var(--accent-green);
+        background: #dcfce7;
+        padding: 8px;
+        border-radius: 50%;
+        font-size: 0.9rem;
+      }
+
+      /* --- TESTIMONIAL LARGE --- */
+      .section-testimonial {
+        padding: 120px 0;
+        background: #111;
+        color: white;
+        text-align: center;
+      }
+      .quote-large {
+        font-size: 2.2rem;
+        font-weight: 600;
+        line-height: 1.4;
+        max-width: 900px;
+        margin: 0 auto 50px;
+        letter-spacing: -1px;
+      }
+      .client-profile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+      }
+      .client-profile img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+      .client-details {
+        text-align: left;
+      }
+      .client-name {
+        font-weight: 700;
+        font-size: 1.2rem;
+        display: block;
+        color: white;
+      }
+      .client-role {
+        color: #888;
+        font-size: 0.95rem;
+      }
+
+      /* --- CTA --- */
+      .section-cta-mega {
+        padding: 80px 0;
+        background: white;
+      }
+      .cta-mega-box {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        background: #f4f4f5;
+        color: #111;
+        border-radius: 40px;
+        padding: 100px 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-mega-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 24px;
+        line-height: 1.1;
+        letter-spacing: -1.5px;
+      }
+      .cta-btn-mega {
+        background: #111;
+        color: white;
+        padding: 20px 50px;
+        border-radius: 50px;
+        font-weight: 700;
+        display: inline-block;
+        font-size: 1.1rem;
+        transition: var(--transition);
+      }
+      .cta-btn-mega:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      /* --- FOOTER --- */
+      footer {
+        background: #000;
+        color: #fff;
+        padding: 80px 0 40px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        margin-bottom: 60px;
+      }
+      /* Footer Logo Image Style */
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .footer-logo svg {
+        width: 32px;
+        height: 32px;
+      }
+      .footer-logo span {
+        font-weight: 800;
+        font-size: 1.5rem;
+        letter-spacing: -1px;
+        color: white;
+      }
+
+      .footer-links h4 {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+      .footer-links ul li {
+        margin-bottom: 12px;
+      }
+      .footer-links ul li a {
+        color: #888;
+        font-size: 0.9rem;
+      }
+      .footer-links ul li a:hover {
+        color: white;
+      }
+      .footer-bottom {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        border-top: 1px solid #333;
+        padding-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #666;
+        font-size: 0.85rem;
+      }
+      .social-icons a {
+        margin-left: 20px;
+        color: #fff;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 1024px) {
+        .text-display {
+          font-size: 3rem;
+        }
+        .ent-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 30px;
+        } /* 2 Kolom di tablet */
+        .hero-container {
+          padding: 60px 40px;
+        }
+      }
+
+      @media (max-width: 960px) {
+        .hero-container {
+          flex-direction: column;
+          padding: 60px 30px;
+          text-align: center;
+          height: auto;
+        }
+        .hero-right {
+          justify-content: center;
+          margin-top: 50px;
+          width: 100%;
+        }
+        .hero-left {
+          width: 100%;
+        }
+        .hero-img {
+          width: 100%;
+          height: auto;
+          max-height: 400px;
+        }
+
+        .split-layout,
+        .split-layout.reverse {
+          flex-direction: column;
+          gap: 50px;
+          text-align: center;
+        }
+        .split-text {
+          width: 100%;
+        }
+        .split-img {
+          width: 100%;
+        }
+        .check-list {
+          display: inline-block;
+          text-align: left;
+        }
+
+        .nav-menu {
+          display: none;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 30px;
+          text-align: center;
+        }
+        .footer-brand {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+        }
+        .footer-logo {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .text-display {
+          font-size: 2.5rem;
+        }
+        .text-h2 {
+          font-size: 2rem;
+        }
+
+        /* Mobile: 1 Kolom & Padding lebih aman */
+        .ent-grid {
+          grid-template-columns: 1fr;
+          gap: 30px;
+          padding: 0; /* Reset padding tambahan */
+        }
+
+        .btn-hero-primary,
+        .btn-hero-secondary {
+          width: 100%;
+          justify-content: center;
+          margin: 0 0 10px 0;
+        }
+        .quote-large {
+          font-size: 1.5rem;
+        }
+        .cta-mega-title {
+          font-size: 2.2rem;
+        }
+        .cta-mega-box {
+          padding: 60px 24px;
+          width: 95%;
+        }
+        .section-cta-mega {
+          padding: 60px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav id="navbar">
+      <div class="nav-container">
+        <div style="display: flex; align-items: center">
+          <a>
+            <img
+              src="bantuin.svg"
+              alt="bantu.in logo"
+              class="nav-logo-img"
+              style="height: 32px"
+            />
+            <span
+              style="font-weight: 800; font-size: 1.2rem; letter-spacing: -1px"
+            ></span>
+          </a>
+
+          <div class="nav-menu">
+            <a href="beranda.html">Beranda</a>
+            <a href="cari_talent.html">Cari Talent</a>
+            <a href="cari-pekerjaan.html">Cari Pekerjaan</a>
+            <a href="enterprise.html" class="active">Enterprise</a>
+            <a href="kenapa-kami.html">Kenapa Kami</a>
+          </div>
+        </div>
+        <div class="nav-actions">
+          <a href="login.html" class="btn btn-outline">Masuk</a>
+          <a href="select.html" class="btn btn-primary">Daftar</a>
+        </div>
+      </div>
+    </nav>
+
+    <script src="assets/js/error-handler.js"></script>
+    <script src="assets/js/loading-state.js"></script>
+    <script src="assets/js/session-ui.js" defer></script>
+    <!-- HERO SECTION -->
+    <section class="hero-wrapper">
+      <div class="hero-container reveal">
+        <div class="hero-left">
+          <div class="badge-pill">
+            <i class="fas fa-building" style="color: #000"></i> Solusi Bisnis
+            Terpadu
+          </div>
+          <h1 class="text-display">
+            Skalakan Tim Anda dengan Kecepatan & Fleksibilitas.
+          </h1>
+          <p
+            class="text-body"
+            style="
+              margin-bottom: 32px;
+              max-width: 500px;
+              margin-left: auto;
+              margin-right: auto;
+            "
+          >
+            Platform manajemen tenaga kerja *on-demand* untuk perusahaan modern.
+            Rekrut, kelola, dan bayar ribuan talent dengan satu sistem
+            terintegrasi.
+          </p>
+
+          <div
+            style="
+              display: flex;
+              flex-wrap: wrap;
+              gap: 10px;
+              justify-content: center;
+            "
+          >
+            <a href="#" class="btn-hero-primary">Hubungi Penjualan</a>
+            <a href="#" class="btn-hero-secondary">Lihat Solusi</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <!-- Image: Corporate/Office setting -->
+          <img
+            src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            alt="Enterprise Office"
+            class="hero-img"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ENTERPRISE FEATURES GRID -->
+    <section class="section-features reveal">
+      <div class="container">
+        <div class="text-center" style="max-width: 800px; margin: 0 auto">
+          <h2 class="text-h2">Didesain untuk Skala Besar</h2>
+          <p class="text-body">
+            Hilangkan hambatan operasional. Kami menyediakan infrastruktur untuk
+            mengelola tenaga kerja fleksibel Anda.
+          </p>
+        </div>
+
+        <div class="ent-grid">
+          <!-- Card 1 -->
+          <div class="ent-card reveal reveal-delay-1">
+            <div class="ent-icon"><i class="fas fa-user-tie"></i></div>
+            <h3>Dedicated Account Manager</h3>
+            <p>
+              Dapatkan dukungan prioritas dari manajer akun khusus yang memahami
+              kebutuhan unik bisnis Anda.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="ent-card reveal reveal-delay-2">
+            <div class="ent-icon">
+              <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <h3>Consolidated Billing</h3>
+            <p>
+              Sederhanakan akuntansi dengan satu faktur bulanan untuk semua
+              aktivitas talent Anda. Tanpa ribet.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="ent-card reveal reveal-delay-3">
+            <div class="ent-icon"><i class="fas fa-file-contract"></i></div>
+            <h3>Compliance & Legal</h3>
+            <p>
+              Kami menangani klasifikasi pekerja dan kontrak hukum, mengurangi
+              risiko kepatuhan perusahaan Anda.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTIONS SPLIT SECTIONS -->
+    <section class="section-solutions">
+      <div class="container">
+        <!-- Solution 1 -->
+        <div class="split-layout reveal">
+          <div class="split-text">
+            <span
+              style="
+                font-weight: 700;
+                color: #666;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                display: block;
+                margin-bottom: 10px;
+              "
+              >Talent Management</span
+            >
+            <h2 class="text-h2">Kontrol Penuh dalam Satu Dashboard.</h2>
+            <p class="text-body">
+              Pantau progres pekerjaan, setujui hasil, dan kelola pembayaran tim
+              yang tersebar di berbagai lokasi secara real-time.
+            </p>
+            <div class="check-list">
+              <div class="check-item">
+                <i class="fas fa-check-circle"></i> Laporan Real-time
+              </div>
+              <div class="check-item">
+                <i class="fas fa-check-circle"></i> Manajemen Akses Tim
+              </div>
+              <div class="check-item">
+                <i class="fas fa-check-circle"></i> Approval Workflow Kustom
+              </div>
+            </div>
+          </div>
+          <div class="split-img">
+            <img
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Dashboard Analytics"
+            />
+          </div>
+        </div>
+
+        <!-- Solution 2 -->
+        <div class="split-layout reverse reveal">
+          <div class="split-text">
+            <span
+              style="
+                font-weight: 700;
+                color: #666;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                display: block;
+                margin-bottom: 10px;
+              "
+              >Custom API</span
+            >
+            <h2 class="text-h2">Integrasi Tanpa Batas.</h2>
+            <p class="text-body">
+              Hubungkan bantu.in langsung dengan sistem internal HR atau ERP
+              Anda melalui API kami yang kuat dan aman.
+            </p>
+            <div class="check-list">
+              <div class="check-item">
+                <i class="fas fa-check-circle"></i> Automasi Posting Tugas
+              </div>
+              <div class="check-item">
+                <i class="fas fa-check-circle"></i> Sinkronisasi Data Talent
+              </div>
+              <div class="check-item">
+                <i class="fas fa-check-circle"></i> Webhooks & Notifications
+              </div>
+            </div>
+          </div>
+          <div class="split-img">
+            <img
+              src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="API Integration"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <section class="section-testimonial reveal">
+      <div class="container">
+        <div class="quote-large">
+          "bantu.in membantu kami menskalakan tim customer service saat peak
+          season hingga 200% tanpa overhead HR yang memusingkan. Game changer."
+        </div>
+        <div class="client-profile">
+          <img
+            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+            alt="CEO Portrait"
+          />
+          <div class="client-details">
+            <span class="client-name">Budi Santoso</span>
+            <span class="client-role">COO, Logistik Express</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEGA CTA -->
+    <section class="section-cta-mega reveal">
+      <div class="cta-mega-box">
+        <h2 class="cta-mega-title">
+          Siap transformasi operasional<br />bisnis Anda?
+        </h2>
+        <p
+          style="
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+          "
+        >
+          Diskusikan kebutuhan spesifik perusahaan Anda dengan tim ahli kami.
+        </p>
+        <a href="#" class="cta-btn-mega">Jadwalkan Demo Gratis</a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img
+            src="bantuin.svg"
+            alt="bantu.in logo"
+            class="footer-logo-img nav-logo-img"
+          />
+          <p>
+            Platform #1 di Indonesia untuk menghubungkan bantuan lokal dengan
+            kebutuhan harian dan bisnis.
+          </p>
+        </div>
+        <div class="footer-links">
+          <h4>Klien</h4>
+          <ul>
+            <li><a href="#">Cara Posting</a></li>
+            <li><a href="cari_talent.html">Cari Talent</a></li>
+            <li><a href="enterprise.html">Enterprise</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Talent</h4>
+          <ul>
+            <li><a href="cari-pekerjaan.html">Cari Pekerjaan</a></li>
+            <li><a href="#">Profil Sukses</a></li>
+            <li><a href="#">Komunitas</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Perusahaan</h4>
+          <ul>
+            <li><a href="kenapa-kami.html">Tentang Kami</a></li>
+            <li><a href="#">Karir</a></li>
+            <li><a href="#">Hubungi Kami</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2025 bantu.in Global Inc.</div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // --- NAVBAR SCROLL ---
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // --- SCROLL REVEAL ---
+      function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveals[i].getBoundingClientRect().top;
+          var elementVisible = 150;
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+          }
+        }
+      }
+      window.addEventListener("scroll", reveal);
+      reveal();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Job Posting - bantu.in</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 0.95rem;
+      }
+
+      .section {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px solid #e9ecef;
+      }
+
+      .section h2 {
+        color: #495057;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-success {
+        background: #22c55e;
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: #16a34a;
+        transform: translateY(-2px);
+      }
+
+      .btn-danger {
+        background: #ef4444;
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+      }
+
+      .btn-warning {
+        background: #f59e0b;
+        color: white;
+      }
+
+      .btn-warning:hover {
+        background: #d97706;
+        transform: translateY(-2px);
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-size: 0.95rem;
+        transition: border 0.3s;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+      }
+
+      .output {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 0.85rem;
+        overflow-x: auto;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .output pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .stat-card {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        color: #6c757d;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .alert-success {
+        background: #d1fae5;
+        color: #065f46;
+        border: 1px solid #10b981;
+      }
+
+      .alert-info {
+        background: #dbeafe;
+        color: #1e40af;
+        border: 1px solid #3b82f6;
+      }
+
+      .job-preview {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+        margin-top: 15px;
+      }
+
+      .job-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+        color: #1e293b;
+      }
+
+      .job-meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+
+      .badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .badge-primary {
+        background: #667eea;
+        color: white;
+      }
+
+      .badge-success {
+        background: #22c55e;
+        color: white;
+      }
+
+      .badge-warning {
+        background: #f59e0b;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><i class="fas fa-flask"></i> Test Job Posting System</h1>
+      <p class="subtitle">Utilitas untuk testing fitur posting pekerjaan</p>
+
+      <!-- Quick Stats -->
+      <div class="section">
+        <h2><i class="fas fa-chart-bar"></i> Storage Statistics</h2>
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-number" id="totalJobs">0</div>
+            <div class="stat-label">Total Jobs</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="openJobs">0</div>
+            <div class="stat-label">Open Jobs</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="storageSize">0</div>
+            <div class="stat-label">Storage Size (KB)</div>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top: 15px">
+          <button class="btn btn-primary" onclick="updateStats()">
+            <i class="fas fa-sync"></i> Refresh Stats
+          </button>
+        </div>
+      </div>
+
+      <!-- Add Test Job -->
+      <div class="section">
+        <h2><i class="fas fa-plus-circle"></i> Add Test Job</h2>
+
+        <label>Job Title</label>
+        <input
+          type="text"
+          id="testTitle"
+          placeholder="Contoh: Desain Logo Perusahaan"
+          value="Test Job - React Developer"
+        />
+
+        <label>Description</label>
+        <textarea id="testDesc" rows="3" placeholder="Deskripsi pekerjaan...">
+Mencari React Developer untuk membangun aplikasi web modern dengan React.js dan Node.js. Pengalaman minimal 2 tahun.</textarea
+        >
+
+        <label>Budget</label>
+        <input
+          type="text"
+          id="testBudget"
+          placeholder="Rp 500.000"
+          value="Rp 5.000.000"
+        />
+
+        <label>Type</label>
+        <select id="testType">
+          <option value="Fixed-price">Fixed-price</option>
+          <option value="Hourly">Hourly</option>
+          <option value="Monthly">Monthly</option>
+        </select>
+
+        <label>Level</label>
+        <select id="testLevel">
+          <option value="Entry">Entry</option>
+          <option value="Intermediate" selected>Intermediate</option>
+          <option value="Expert">Expert</option>
+        </select>
+
+        <label>Category</label>
+        <select id="testCategory">
+          <option value="tekno" selected>Teknologi & IT</option>
+          <option value="kreatif">Kreatif & Desain</option>
+          <option value="writing">Writing & Translation</option>
+          <option value="admin">Admin & Support</option>
+          <option value="fisik">Pekerjaan Fisik</option>
+        </select>
+
+        <label>Location</label>
+        <input
+          type="text"
+          id="testLocation"
+          placeholder="Jakarta, ID"
+          value="Remote / Jakarta"
+        />
+
+        <div class="btn-group">
+          <button class="btn btn-success" onclick="addTestJob()">
+            <i class="fas fa-plus"></i> Add Test Job
+          </button>
+          <button class="btn btn-primary" onclick="addMultipleJobs()">
+            <i class="fas fa-layer-group"></i> Add 5 Sample Jobs
+          </button>
+        </div>
+      </div>
+
+      <!-- View Jobs -->
+      <div class="section">
+        <h2><i class="fas fa-list"></i> View All Jobs</h2>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="viewAllJobs()">
+            <i class="fas fa-eye"></i> Show All Jobs
+          </button>
+          <button class="btn btn-warning" onclick="viewLatestJob()">
+            <i class="fas fa-clock"></i> Show Latest Job
+          </button>
+          <button class="btn btn-danger" onclick="clearAllJobs()">
+            <i class="fas fa-trash"></i> Clear All Jobs
+          </button>
+        </div>
+        <div
+          id="jobsOutput"
+          class="output"
+          style="margin-top: 15px; display: none"
+        >
+          <pre id="jobsContent"></pre>
+        </div>
+        <div id="jobPreview" style="margin-top: 15px"></div>
+      </div>
+
+      <!-- Check Session -->
+      <div class="section">
+        <h2><i class="fas fa-user-check"></i> Session Info</h2>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="checkSession()">
+            <i class="fas fa-search"></i> Check Current Session
+          </button>
+          <button class="btn btn-success" onclick="createMockSession()">
+            <i class="fas fa-user-plus"></i> Create Mock Client Session
+          </button>
+        </div>
+        <div
+          id="sessionOutput"
+          class="output"
+          style="margin-top: 15px; display: none"
+        >
+          <pre id="sessionContent"></pre>
+        </div>
+      </div>
+
+      <!-- Export / Import -->
+      <div class="section">
+        <h2><i class="fas fa-file-export"></i> Export / Import</h2>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="exportJobs()">
+            <i class="fas fa-download"></i> Export Jobs to JSON
+          </button>
+          <button class="btn btn-warning" onclick="copyToClipboard()">
+            <i class="fas fa-copy"></i> Copy Jobs to Clipboard
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="section">
+        <h2><i class="fas fa-compass"></i> Quick Navigation</h2>
+        <div class="btn-group">
+          <a href="profile.html" class="btn btn-primary">
+            <i class="fas fa-user"></i> Go to Profile
+          </a>
+          <a href="cari-pekerjaan.html" class="btn btn-success">
+            <i class="fas fa-briefcase"></i> Go to Cari Pekerjaan
+          </a>
+          <a href="beranda.html" class="btn btn-warning">
+            <i class="fas fa-home"></i> Go to Home
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Update stats on page load
+      window.addEventListener("load", () => {
+        updateStats();
+      });
+
+      function updateStats() {
+        try {
+          const jobs = JSON.parse(
+            localStorage.getItem("bantuin_tasks") || "[]"
+          );
+          const openJobs = jobs.filter((j) => j.status === "open" || !j.status);
+
+          document.getElementById("totalJobs").textContent = jobs.length;
+          document.getElementById("openJobs").textContent = openJobs.length;
+
+          // Calculate storage size
+          let totalSize = 0;
+          const data = localStorage.getItem("bantuin_tasks") || "";
+          totalSize = (data.length * 2) / 1024; // UTF-16 encoding
+          document.getElementById("storageSize").textContent =
+            totalSize.toFixed(2);
+        } catch (err) {
+          console.error("Error updating stats:", err);
+        }
+      }
+
+      function addTestJob() {
+        try {
+          const title = document.getElementById("testTitle").value.trim();
+          const desc = document.getElementById("testDesc").value.trim();
+          const budget = document.getElementById("testBudget").value.trim();
+          const type = document.getElementById("testType").value;
+          const level = document.getElementById("testLevel").value;
+          const category = document.getElementById("testCategory").value;
+          const location = document.getElementById("testLocation").value.trim();
+
+          if (!title || !desc) {
+            alert("Title and Description are required!");
+            return;
+          }
+
+          // Get session info
+          const session = JSON.parse(
+            localStorage.getItem("bantuin_session") || "{}"
+          );
+          const profile = JSON.parse(
+            localStorage.getItem("rpl_profile") || "{}"
+          );
+
+          const clientName = session.user || profile.name || "Test Client";
+          const clientEmail =
+            session.email || profile.email || "test@example.com";
+
+          const taskObj = {
+            id: Date.now(),
+            title: title,
+            description: desc,
+            desc: desc,
+            budget: budget || "Negosiasi",
+            type: type,
+            level: level,
+            category: category,
+            location: location || "Indonesia",
+            tags: [category, level, type],
+            deadline: null,
+            fileName: null,
+            fileSize: null,
+            uploadDate: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
+            status: "open",
+            owner: clientName,
+            ownerEmail: clientEmail,
+            clientVerified: false,
+            clientRating: 0,
+            clientSpent: "Rp 0",
+          };
+
+          const jobs = JSON.parse(
+            localStorage.getItem("bantuin_tasks") || "[]"
+          );
+          jobs.unshift(taskObj);
+          localStorage.setItem("bantuin_tasks", JSON.stringify(jobs));
+
+          // Also save to user-specific storage
+          const userKey = "bantuin_user_tasks_" + clientEmail;
+          const userJobs = JSON.parse(localStorage.getItem(userKey) || "[]");
+          userJobs.unshift(taskObj);
+          localStorage.setItem(userKey, JSON.stringify(userJobs));
+
+          alert(
+            "✅ Test job added successfully!\\n\\nTotal jobs: " + jobs.length
+          );
+          updateStats();
+          viewLatestJob();
+        } catch (err) {
+          alert("❌ Error adding test job: " + err.message);
+          console.error(err);
+        }
+      }
+
+      function addMultipleJobs() {
+        const sampleJobs = [
+          {
+            title: "Desain Logo Startup Teknologi",
+            desc: "Butuh desain logo modern dan minimalis untuk startup di bidang AI",
+            budget: "Rp 1.000.000",
+            type: "Fixed-price",
+            level: "Expert",
+            category: "kreatif",
+            location: "Jakarta, ID",
+          },
+          {
+            title: "Translator Technical Documentation",
+            desc: "Menerjemahkan dokumentasi teknis dari bahasa Inggris ke Indonesia",
+            budget: "Rp 100rb/halaman",
+            type: "Hourly",
+            level: "Intermediate",
+            category: "writing",
+            location: "Remote",
+          },
+          {
+            title: "Admin Social Media Management",
+            desc: "Handle posting konten dan reply comments di Instagram dan TikTok",
+            budget: "Rp 3.000.000/bulan",
+            type: "Monthly",
+            level: "Entry",
+            category: "admin",
+            location: "Surabaya, ID",
+          },
+          {
+            title: "WordPress Bug Fix - Urgent",
+            desc: "Website error setelah update plugin. Butuh fix ASAP.",
+            budget: "Rp 500.000",
+            type: "Fixed-price",
+            level: "Expert",
+            category: "tekno",
+            location: "Remote",
+          },
+          {
+            title: "Bantu Packing Barang Pindahan",
+            desc: "Butuh 2 orang untuk bantu packing barang rumah selama 1 hari",
+            budget: "Rp 200rb/orang",
+            type: "Fixed-price",
+            level: "Entry",
+            category: "fisik",
+            location: "Bandung, ID",
+          },
+        ];
+
+        const session = JSON.parse(
+          localStorage.getItem("bantuin_session") || "{}"
+        );
+        const profile = JSON.parse(localStorage.getItem("rpl_profile") || "{}");
+        const clientName = session.user || profile.name || "Test Client";
+        const clientEmail =
+          session.email || profile.email || "test@example.com";
+
+        const jobs = JSON.parse(localStorage.getItem("bantuin_tasks") || "[]");
+
+        sampleJobs.forEach((sample) => {
+          const taskObj = {
+            id: Date.now() + Math.random(),
+            title: sample.title,
+            description: sample.desc,
+            desc: sample.desc,
+            budget: sample.budget,
+            type: sample.type,
+            level: sample.level,
+            category: sample.category,
+            location: sample.location,
+            tags: [sample.category, sample.level, sample.type],
+            deadline: null,
+            fileName: null,
+            fileSize: null,
+            uploadDate: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
+            status: "open",
+            owner: clientName,
+            ownerEmail: clientEmail,
+            clientVerified: false,
+            clientRating: 0,
+            clientSpent: "Rp 0",
+          };
+          jobs.unshift(taskObj);
+        });
+
+        localStorage.setItem("bantuin_tasks", JSON.stringify(jobs));
+
+        alert("✅ Added 5 sample jobs!\\n\\nTotal jobs: " + jobs.length);
+        updateStats();
+        viewAllJobs();
+      }
+
+      function viewAllJobs() {
+        try {
+          const jobs = JSON.parse(
+            localStorage.getItem("bantuin_tasks") || "[]"
+          );
+
+          if (jobs.length === 0) {
+            document.getElementById("jobsContent").textContent =
+              "No jobs found in localStorage";
+          } else {
+            document.getElementById("jobsContent").textContent = JSON.stringify(
+              jobs,
+              null,
+              2
+            );
+          }
+
+          document.getElementById("jobsOutput").style.display = "block";
+          document.getElementById("jobPreview").innerHTML = "";
+        } catch (err) {
+          document.getElementById("jobsContent").textContent =
+            "Error: " + err.message;
+          document.getElementById("jobsOutput").style.display = "block";
+        }
+      }
+
+      function viewLatestJob() {
+        try {
+          const jobs = JSON.parse(
+            localStorage.getItem("bantuin_tasks") || "[]"
+          );
+
+          if (jobs.length === 0) {
+            alert("No jobs found!");
+            return;
+          }
+
+          const latest = jobs[0];
+
+          // Show in output
+          document.getElementById("jobsContent").textContent = JSON.stringify(
+            latest,
+            null,
+            2
+          );
+          document.getElementById("jobsOutput").style.display = "block";
+
+          // Show preview
+          const preview = `
+                    <div class="job-preview">
+                        <div class="job-title">${latest.title}</div>
+                        <div class="job-meta">
+                            <span class="badge badge-primary">${latest.type}</span>
+                            <span class="badge badge-warning">${latest.level}</span>
+                            <span class="badge badge-success">${latest.category}</span>
+                        </div>
+                        <div style="color: #1e40af; font-weight: 600; margin-bottom: 8px;">
+                            <i class="fas fa-wallet"></i> ${latest.budget}
+                        </div>
+                        <div style="color: #6c757d; margin-bottom: 10px;">
+                            ${latest.description}
+                        </div>
+                        <div style="font-size: 0.85rem; color: #6c757d;">
+                            <i class="fas fa-user"></i> ${latest.owner} | 
+                            <i class="fas fa-map-marker-alt"></i> ${latest.location} |
+                            <i class="fas fa-clock"></i> Just now
+                        </div>
+                    </div>
+                `;
+
+          document.getElementById("jobPreview").innerHTML = preview;
+        } catch (err) {
+          alert("Error: " + err.message);
+        }
+      }
+
+      function clearAllJobs() {
+        if (
+          !confirm(
+            "⚠️ Are you sure you want to delete ALL jobs?\\n\\nThis action cannot be undone!"
+          )
+        ) {
+          return;
+        }
+
+        try {
+          localStorage.removeItem("bantuin_tasks");
+
+          // Also clear user-specific storage
+          Object.keys(localStorage).forEach((key) => {
+            if (key.startsWith("bantuin_user_tasks_")) {
+              localStorage.removeItem(key);
+            }
+          });
+
+          alert("✅ All jobs cleared!");
+          updateStats();
+          document.getElementById("jobsOutput").style.display = "none";
+          document.getElementById("jobPreview").innerHTML = "";
+        } catch (err) {
+          alert("Error: " + err.message);
+        }
+      }
+
+      function checkSession() {
+        try {
+          const session = JSON.parse(
+            localStorage.getItem("bantuin_session") || "{}"
+          );
+          const profile = JSON.parse(
+            localStorage.getItem("rpl_profile") || "{}"
+          );
+          const currentRole = localStorage.getItem("rpl_currentRole");
+
+          const info = {
+            bantuin_session: session,
+            rpl_profile: profile,
+            rpl_currentRole: currentRole,
+            isLoggedIn: Object.keys(session).length > 0,
+            userEmail: session.email || profile.email || "Not set",
+            userName: session.user || profile.name || "Not set",
+            userRole: currentRole || session.role || profile.role || "Not set",
+          };
+
+          document.getElementById("sessionContent").textContent =
+            JSON.stringify(info, null, 2);
+          document.getElementById("sessionOutput").style.display = "block";
+        } catch (err) {
+          document.getElementById("sessionContent").textContent =
+            "Error: " + err.message;
+          document.getElementById("sessionOutput").style.display = "block";
+        }
+      }
+
+      function createMockSession() {
+        try {
+          const mockSession = {
+            user: "Test Client",
+            email: "testclient@example.com",
+            role: "client",
+            loginTime: new Date().toISOString(),
+          };
+
+          const mockProfile = {
+            name: "Test Client",
+            email: "testclient@example.com",
+            role: "client",
+          };
+
+          localStorage.setItem("bantuin_session", JSON.stringify(mockSession));
+          localStorage.setItem("rpl_profile", JSON.stringify(mockProfile));
+          localStorage.setItem("rpl_currentRole", "client");
+
+          alert(
+            "✅ Mock client session created!\\n\\nEmail: testclient@example.com\\nRole: client"
+          );
+          checkSession();
+        } catch (err) {
+          alert("Error: " + err.message);
+        }
+      }
+
+      function exportJobs() {
+        try {
+          const jobs = JSON.parse(
+            localStorage.getItem("bantuin_tasks") || "[]"
+          );
+          const dataStr = JSON.stringify(jobs, null, 2);
+          const dataBlob = new Blob([dataStr], { type: "application/json" });
+          const url = URL.createObjectURL(dataBlob);
+
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "bantuin_jobs_" + Date.now() + ".json";
+          link.click();
+
+          URL.revokeObjectURL(url);
+          alert("✅ Jobs exported successfully!");
+        } catch (err) {
+          alert("Error: " + err.message);
+        }
+      }
+
+      function copyToClipboard() {
+        try {
+          const jobs = JSON.parse(
+            localStorage.getItem("bantuin_tasks") || "[]"
+          );
+          const dataStr = JSON.stringify(jobs, null, 2);
+
+          navigator.clipboard
+            .writeText(dataStr)
+            .then(() => {
+              alert("✅ Jobs data copied to clipboard!");
+            })
+            .catch((err) => {
+              alert("Error copying to clipboard: " + err.message);
+            });
+        } catch (err) {
+          alert("Error: " + err.message);
+        }
+      }
+    </script>
+  </body>
+</html>

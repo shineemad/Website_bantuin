@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debug - Tombol Tambah Pekerjaan</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f5f5f5;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .box {
+        background: white;
+        padding: 20px;
+        margin: 10px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 5px;
+        font-size: 14px;
+      }
+      button:hover {
+        background: #5568d3;
+      }
+      .success {
+        color: #22c55e;
+        font-weight: bold;
+      }
+      .error {
+        color: #ef4444;
+        font-weight: bold;
+      }
+      pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: 13px;
+      }
+      .step {
+        background: #667eea;
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔧 Debug - Tombol Tambah Pekerjaan</h1>
+    <p>Diagnose kenapa tombol tidak berfungsi</p>
+
+    <div class="box">
+      <h3><span class="step">1</span>Setup Role Client</h3>
+      <button onclick="setupClient()">👔 Setup Client Role</button>
+      <div id="setupResult"></div>
+    </div>
+
+    <div class="box">
+      <h3><span class="step">2</span>Check Console untuk Error</h3>
+      <p>Buka Console (tekan F12) dan lihat apakah ada error merah</p>
+      <button onclick="checkConsole()">📋 Show Instructions</button>
+    </div>
+
+    <div class="box">
+      <h3><span class="step">3</span>Test Button di Profile</h3>
+      <button onclick="testButton()">🧪 Open Profile & Test</button>
+      <div id="testInstructions" style="margin-top: 10px"></div>
+    </div>
+
+    <div class="box">
+      <h3><span class="step">4</span>Manual Debug</h3>
+      <p>
+        Jika button masih tidak berfungsi, paste kode ini di Console saat di
+        profile.html:
+      </p>
+      <pre>
+// Check if button exists
+console.log('Button:', document.getElementById('toggleJobFormBtn'));
+
+// Check if form exists
+console.log('Form:', document.getElementById('jobFormContainer'));
+
+// Check if function exists
+console.log('Function:', typeof toggleJobForm);
+
+// Try to call function manually
+if (typeof toggleJobForm === 'function') {
+    toggleJobForm();
+} else {
+    console.error('toggleJobForm function not found!');
+}</pre
+      >
+      <button onclick="copyDebugCode()">📋 Copy Debug Code</button>
+    </div>
+
+    <div class="box">
+      <h3><span class="step">5</span>Force Click Test</h3>
+      <p>Test apakah button bisa di-click secara programmatic:</p>
+      <button onclick="forceClickTest()">⚡ Open Profile & Force Click</button>
+      <div id="forceResult"></div>
+    </div>
+
+    <script>
+      function setupClient() {
+        const data = {
+          name: "Debug Client",
+          email: "debug@test.com",
+          role: "client",
+        };
+
+        localStorage.setItem("rpl_currentRole", "client");
+        localStorage.setItem("rpl_profile", JSON.stringify(data));
+        localStorage.setItem(
+          "bantuin_session",
+          JSON.stringify({
+            user: data.name,
+            email: data.email,
+            role: "client",
+            isLoggedIn: true,
+          })
+        );
+
+        document.getElementById("setupResult").innerHTML =
+          '<p class="success">✅ Client role setup berhasil! Role: CLIENT</p>';
+        console.log("✅ Setup complete:", data);
+      }
+
+      function checkConsole() {
+        alert(
+          '📋 Cara Check Console:\n\n1. Buka profile.html\n2. Tekan F12 atau Ctrl+Shift+I\n3. Klik tab "Console"\n4. Lihat apakah ada error (teks merah)\n5. Coba klik tombol "Tambah Pekerjaan Baru"\n6. Lihat apakah ada log "toggleJobForm called"'
+        );
+      }
+
+      function testButton() {
+        const instructions = `
+🧪 TESTING STEPS:
+
+1. Profile.html akan dibuka di tab baru
+2. Scroll ke bagian "Pekerjaan Saya"
+3. Cari tombol "Tambah Pekerjaan Baru"
+4. Klik tombol tersebut
+5. Form seharusnya muncul
+
+JIKA TIDAK MUNCUL:
+❌ Check Console (F12) untuk error
+❌ Refresh page (Ctrl+R)
+❌ Hard refresh (Ctrl+Shift+R)
+
+EXPECTED BEHAVIOR:
+✅ Button berubah jadi "Tutup Form"
+✅ Form muncul dengan background abu-abu
+✅ Ada field: Judul, Deskripsi, Budget, dll
+✅ Console log: "toggleJobForm called"
+✅ Console log: "Form opened"
+            `.trim();
+
+        document.getElementById("testInstructions").innerHTML =
+          '<pre style="white-space: pre-wrap; background: #e7f3ff; color: #0c5460; border-left: 4px solid #2196F3;">' +
+          instructions +
+          "</pre>";
+
+        setTimeout(() => {
+          window.open("profile.html", "_blank");
+        }, 1000);
+      }
+
+      function copyDebugCode() {
+        const code = `// Check if button exists
+console.log('Button:', document.getElementById('toggleJobFormBtn'));
+
+// Check if form exists
+console.log('Form:', document.getElementById('jobFormContainer'));
+
+// Check if function exists
+console.log('Function:', typeof toggleJobForm);
+
+// Try to call function manually
+if (typeof toggleJobForm === 'function') {
+    toggleJobForm();
+} else {
+    console.error('toggleJobForm function not found!');
+}`;
+
+        navigator.clipboard
+          .writeText(code)
+          .then(() => {
+            alert("✅ Debug code copied! Paste di Console profile.html");
+          })
+          .catch(() => {
+            alert("❌ Gagal copy. Silakan copy manual dari box di atas.");
+          });
+      }
+
+      function forceClickTest() {
+        document.getElementById("forceResult").innerHTML =
+          '<p class="success">⚡ Opening profile.html...<br>Console akan otomatis mencoba click button!</p>';
+
+        // Open profile with special script
+        const profileWindow = window.open("profile.html", "_blank");
+
+        // Wait for page load then try to click
+        setTimeout(() => {
+          const message = `
+Profile opened! 
+
+Sekarang paste kode ini di Console (F12):
+
+setTimeout(() => {
+    const btn = document.getElementById('toggleJobFormBtn');
+    if (btn) {
+        console.log('Button found:', btn);
+        btn.click();
+        console.log('Button clicked!');
+    } else {
+        console.error('Button NOT found!');
+    }
+}, 1000);
+                `.trim();
+
+          console.log(message);
+          alert(message);
+        }, 2000);
+      }
+
+      // Auto-setup on load
+      window.onload = function () {
+        // Check if role already set
+        const role = localStorage.getItem("rpl_currentRole");
+        if (role === "client") {
+          document.getElementById("setupResult").innerHTML =
+            '<p class="success">✅ Role sudah di-set: CLIENT</p>';
+        } else if (role) {
+          document.getElementById("setupResult").innerHTML =
+            '<p class="error">⚠️ Role saat ini: ' +
+            role +
+            " (bukan client)</p>";
+        }
+      };
+    </script>
+  </body>
+</html>

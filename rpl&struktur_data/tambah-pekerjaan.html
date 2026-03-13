@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Posting Pekerjaan Baru - bantu.in</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* --- THEME VARIABLES --- */
+      :root {
+        --bg-body: #ffffff;
+        --bg-alt: #f7f7f7;
+        --bg-dark: #111111;
+        --text-main: #000000;
+        --text-sub: #555555;
+        --border-color: #e0e0e0;
+        --max-w: 900px;
+        --radius-card: 16px;
+        --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        --accent-green: #22c55e;
+        --accent-hover: #16a34a;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text-main);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        padding: 40px 20px;
+      }
+
+      /* --- CONTAINER --- */
+      .container {
+        max-width: var(--max-w);
+        margin: 0 auto;
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.6s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* --- HEADER --- */
+      .page-header {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid var(--border-color);
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--bg-dark);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .page-header h1 i {
+        color: var(--accent-green);
+      }
+
+      .page-header p {
+        color: var(--text-sub);
+        font-size: 0.95rem;
+      }
+
+      /* --- BACK BUTTON --- */
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-sub);
+        text-decoration: none;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        transition: var(--transition);
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: var(--bg-alt);
+      }
+
+      .back-btn:hover {
+        color: var(--accent-green);
+        background: #e8f5e9;
+        transform: translateX(-5px);
+      }
+
+      /* --- FORM STYLES --- */
+      .form-section {
+        margin-bottom: 30px;
+      }
+
+      .form-section h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--bg-dark);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .form-section h2 i {
+        font-size: 1.1rem;
+        color: var(--accent-green);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        color: var(--text-main);
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+      }
+
+      label .required {
+        color: #ef4444;
+        margin-left: 4px;
+      }
+
+      label .optional {
+        color: var(--text-sub);
+        font-weight: 400;
+        font-size: 0.85rem;
+        margin-left: 4px;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="url"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        font-family: "Inter", sans-serif;
+        font-size: 0.95rem;
+        transition: var(--transition);
+        background: white;
+        color: var(--text-main);
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--accent-green);
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 120px;
+        line-height: 1.6;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: #999;
+      }
+
+      /* --- FILE UPLOAD --- */
+      .file-upload-wrapper {
+        position: relative;
+      }
+
+      .file-upload-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 24px;
+        background: var(--bg-alt);
+        border: 2px dashed var(--border-color);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+        color: var(--text-sub);
+      }
+
+      .file-upload-btn:hover {
+        background: #e8f5e9;
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+      }
+
+      .file-upload-btn i {
+        font-size: 1.2rem;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .file-info {
+        margin-top: 10px;
+        font-size: 0.85rem;
+        color: var(--text-sub);
+      }
+
+      .file-selected {
+        margin-top: 10px;
+        padding: 10px 14px;
+        background: #e8f5e9;
+        border-radius: 8px;
+        color: var(--accent-green);
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* --- SELECT GRID --- */
+      .select-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+      }
+
+      /* --- HELP TEXT --- */
+      .help-text {
+        font-size: 0.85rem;
+        color: var(--text-sub);
+        margin-top: 6px;
+        display: flex;
+        align-items: start;
+        gap: 6px;
+      }
+
+      .help-text i {
+        margin-top: 2px;
+        font-size: 0.8rem;
+      }
+
+      /* --- BUTTONS --- */
+      .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 2px solid var(--border-color);
+      }
+
+      .btn {
+        padding: 14px 32px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "Inter", sans-serif;
+        text-decoration: none;
+      }
+
+      .btn-primary {
+        background: var(--accent-green);
+        color: white;
+        flex: 1;
+        justify-content: center;
+      }
+
+      .btn-primary:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+      }
+
+      .btn-outline {
+        background: white;
+        color: var(--text-main);
+        border: 2px solid var(--border-color);
+      }
+
+      .btn-outline:hover {
+        background: var(--bg-alt);
+        border-color: var(--text-sub);
+      }
+
+      .btn i {
+        font-size: 1.1rem;
+      }
+
+      /* --- PREVIEW SECTION --- */
+      .preview-section {
+        background: var(--bg-alt);
+        padding: 24px;
+        border-radius: 16px;
+        margin-top: 30px;
+        border: 2px solid var(--border-color);
+      }
+
+      .preview-section h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--bg-dark);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .preview-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        border: 2px solid var(--border-color);
+      }
+
+      .preview-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--bg-dark);
+        margin-bottom: 10px;
+      }
+
+      .preview-meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+
+      .badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .badge-primary {
+        background: #e0e7ff;
+        color: #4338ca;
+      }
+
+      .badge-success {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      .badge-warning {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .preview-budget {
+        color: #1e40af;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+      }
+
+      .preview-desc {
+        color: var(--text-sub);
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      /* --- TOAST NOTIFICATION --- */
+      .pi-toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--accent-green);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* --- RESPONSIVE --- */
+      @media (max-width: 768px) {
+        body {
+          padding: 20px 10px;
+        }
+
+        .container {
+          padding: 24px;
+        }
+
+        .page-header h1 {
+          font-size: 1.5rem;
+        }
+
+        .form-actions {
+          flex-direction: column;
+        }
+
+        .btn-primary {
+          width: 100%;
+        }
+
+        .select-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* --- LOADING STATE --- */
+      .btn-loading {
+        position: relative;
+        pointer-events: none;
+        opacity: 0.7;
+      }
+
+      .btn-loading::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 2px solid white;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        right: 20px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* --- CHARACTER COUNTER --- */
+      .char-counter {
+        text-align: right;
+        font-size: 0.8rem;
+        color: var(--text-sub);
+        margin-top: 6px;
+      }
+
+      .char-counter.warning {
+        color: #f59e0b;
+      }
+
+      .char-counter.error {
+        color: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="profile.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        Kembali ke Profile
+      </a>
+
+      <div class="page-header">
+        <h1>
+          <i class="fas fa-briefcase"></i>
+          Posting Pekerjaan Baru
+        </h1>
+        <p>
+          Isi form di bawah untuk memposting pekerjaan Anda. Pekerjaan akan
+          tampil di halaman <strong>Cari Pekerjaan</strong> untuk dilihat oleh
+          talent.
+        </p>
+      </div>
+
+      <form id="jobPostingForm">
+        <!-- Basic Information -->
+        <div class="form-section">
+          <h2>
+            <i class="fas fa-info-circle"></i>
+            Informasi Dasar
+          </h2>
+
+          <div class="form-group">
+            <label for="jobTitle">
+              Judul Pekerjaan
+              <span class="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="jobTitle"
+              name="jobTitle"
+              placeholder="Contoh: Desain Logo Perusahaan Startup"
+              required
+              maxlength="100"
+            />
+            <div class="char-counter">
+              <span id="titleCounter">0</span>/100 karakter
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="jobDescription">
+              Deskripsi Pekerjaan
+              <span class="required">*</span>
+            </label>
+            <textarea
+              id="jobDescription"
+              name="jobDescription"
+              placeholder="Jelaskan detail pekerjaan yang perlu dikerjakan oleh talent. Semakin detail, semakin mudah talent memahami kebutuhan Anda."
+              required
+              maxlength="1000"
+            ></textarea>
+            <div class="char-counter">
+              <span id="descCounter">0</span>/1000 karakter
+            </div>
+            <div class="help-text">
+              <i class="fas fa-lightbulb"></i>
+              <span
+                >Tips: Jelaskan tujuan, target audience, style yang diinginkan,
+                dan deliverables yang diharapkan.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Job Details -->
+        <div class="form-section">
+          <h2>
+            <i class="fas fa-sliders-h"></i>
+            Detail Pekerjaan
+          </h2>
+
+          <div class="select-grid">
+            <div class="form-group">
+              <label for="jobCategory">
+                Kategori
+                <span class="required">*</span>
+              </label>
+              <select id="jobCategory" name="jobCategory" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="tekno">💻 Teknologi & IT</option>
+                <option value="kreatif">🎨 Kreatif & Desain</option>
+                <option value="writing">✍️ Writing & Translation</option>
+                <option value="admin">📊 Admin & Support</option>
+                <option value="fisik">🔧 Pekerjaan Fisik</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="jobLevel">
+                Level Kesulitan
+                <span class="required">*</span>
+              </label>
+              <select id="jobLevel" name="jobLevel" required>
+                <option value="">-- Pilih Level --</option>
+                <option value="Entry">🟢 Entry (Pemula)</option>
+                <option value="Intermediate">🟡 Intermediate (Menengah)</option>
+                <option value="Expert">🔴 Expert (Ahli)</option>
+              </select>
+              <div class="help-text">
+                <i class="fas fa-info-circle"></i>
+                <span
+                  >Entry: 0-1 tahun | Intermediate: 2-4 tahun | Expert: 5+
+                  tahun</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="select-grid">
+            <div class="form-group">
+              <label for="jobType">
+                Tipe Pembayaran
+                <span class="required">*</span>
+              </label>
+              <select id="jobType" name="jobType" required>
+                <option value="">-- Pilih Tipe --</option>
+                <option value="Fixed-price">
+                  💵 Fixed-price (Harga tetap)
+                </option>
+                <option value="Hourly">⏱️ Hourly (Per jam)</option>
+                <option value="Monthly">📅 Monthly (Bulanan)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="jobBudget">
+                Budget / Harga
+                <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="jobBudget"
+                name="jobBudget"
+                placeholder="Contoh: Rp 1.000.000 atau Rp 50.000/jam"
+                required
+              />
+              <div class="help-text">
+                <i class="fas fa-info-circle"></i>
+                <span>Format: Rp X.XXX.XXX atau Rp XX.XXX/jam</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location & Deadline -->
+        <div class="form-section">
+          <h2>
+            <i class="fas fa-map-marker-alt"></i>
+            Lokasi & Timeline
+          </h2>
+
+          <div class="select-grid">
+            <div class="form-group">
+              <label for="jobLocation">
+                Lokasi Pekerjaan
+                <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="jobLocation"
+                name="jobLocation"
+                placeholder="Contoh: Jakarta, ID atau Remote"
+                value="Indonesia"
+                required
+              />
+              <div class="help-text">
+                <i class="fas fa-info-circle"></i>
+                <span
+                  >Tulis "Remote" jika pekerjaan bisa dikerjakan dari mana
+                  saja</span
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="jobDeadline">
+                Deadline Pengerjaan
+                <span class="optional">(Opsional)</span>
+              </label>
+              <input type="date" id="jobDeadline" name="jobDeadline" />
+              <div class="help-text">
+                <i class="fas fa-calendar"></i>
+                <span>Kapan pekerjaan harus selesai?</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="form-section">
+          <h2>
+            <i class="fas fa-paperclip"></i>
+            Informasi Tambahan
+          </h2>
+
+          <div class="form-group">
+            <label for="jobRequirements">
+              Requirements / Persyaratan
+              <span class="optional">(Opsional)</span>
+            </label>
+            <textarea
+              id="jobRequirements"
+              name="jobRequirements"
+              placeholder="Contoh: Menguasai Adobe Illustrator, portfolio minimal 3 project, komunikatif, dll."
+              rows="4"
+              maxlength="500"
+            ></textarea>
+            <div class="char-counter">
+              <span id="reqCounter">0</span>/500 karakter
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="jobFile">
+              Upload File Brief/Requirement
+              <span class="optional">(Opsional)</span>
+            </label>
+            <div class="file-upload-wrapper">
+              <label for="jobFile" class="file-upload-btn">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span id="fileButtonText">Pilih File</span>
+              </label>
+              <input
+                type="file"
+                id="jobFile"
+                name="jobFile"
+                accept=".pdf,.doc,.docx,.zip,.rar,.jpg,.jpeg,.png"
+              />
+              <div
+                id="fileSelected"
+                class="file-selected"
+                style="display: none"
+              >
+                <i class="fas fa-file"></i>
+                <span id="fileName"></span>
+              </div>
+              <div class="file-info">
+                <i class="fas fa-info-circle"></i>
+                Format: PDF, DOC, ZIP, atau gambar | Max: 10MB
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="jobContactEmail">
+              Email Kontak
+              <span class="optional">(Opsional)</span>
+            </label>
+            <input
+              type="text"
+              id="jobContactEmail"
+              name="jobContactEmail"
+              placeholder="Email untuk dihubungi talent (default: email akun Anda)"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="jobContactPhone">
+              Nomor Telepon / WhatsApp
+              <span class="optional">(Opsional)</span>
+            </label>
+            <input
+              type="text"
+              id="jobContactPhone"
+              name="jobContactPhone"
+              placeholder="Contoh: 08123456789"
+            />
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-section">
+          <h3>
+            <i class="fas fa-eye"></i>
+            Preview Pekerjaan
+          </h3>
+          <div class="preview-card">
+            <div class="preview-title" id="previewTitle">
+              [Judul pekerjaan akan muncul di sini]
+            </div>
+            <div class="preview-meta">
+              <span class="badge badge-primary" id="previewType"
+                >Fixed-price</span
+              >
+              <span class="badge badge-warning" id="previewLevel"
+                >Intermediate</span
+              >
+              <span class="badge badge-success" id="previewCategory"
+                >tekno</span
+              >
+            </div>
+            <div class="preview-budget" id="previewBudget">
+              <i class="fas fa-wallet"></i> Rp -
+            </div>
+            <div class="preview-desc" id="previewDesc">
+              [Deskripsi pekerjaan akan muncul di sini]
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-sub)">
+              <i class="fas fa-map-marker-alt"></i>
+              <span id="previewLocation">Indonesia</span>
+              <span style="margin: 0 8px">•</span>
+              <i class="fas fa-clock"></i>
+              Baru saja
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            <i class="fas fa-paper-plane"></i>
+            Posting Pekerjaan
+          </button>
+          <a href="profile.html" class="btn btn-outline">
+            <i class="fas fa-times"></i>
+            Batal
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        // Helper functions
+        function get(id) {
+          return document.getElementById(id);
+        }
+
+        function showToast(msg, type) {
+          try {
+            var t = document.createElement("div");
+            t.className = "pi-toast";
+            t.innerHTML = '<i class="fas fa-check-circle"></i> ' + msg;
+            if (type === "error") {
+              t.style.background = "#ef4444";
+              t.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + msg;
+            }
+            document.body.appendChild(t);
+            requestAnimationFrame(function () {
+              t.style.opacity = "1";
+              t.style.transform = "translateY(0)";
+            });
+            setTimeout(function () {
+              t.style.opacity = "0";
+              t.style.transform = "translateY(-20px)";
+              setTimeout(function () {
+                t.remove();
+              }, 400);
+            }, 3000);
+          } catch (e) {
+            alert(msg);
+          }
+        }
+
+        function loadProfile() {
+          try {
+            var session = JSON.parse(
+              localStorage.getItem("bantuin_session") || "{}"
+            );
+            var profile = JSON.parse(
+              localStorage.getItem("rpl_profile") || "{}"
+            );
+            return {
+              name: session.user || profile.name || "Anonymous",
+              email: session.email || profile.email || "user@example.com",
+              role:
+                localStorage.getItem("rpl_currentRole") ||
+                session.role ||
+                profile.role ||
+                "client",
+            };
+          } catch (err) {
+            return {
+              name: "Anonymous",
+              email: "user@example.com",
+              role: "client",
+            };
+          }
+        }
+
+        // Check if user is client
+        var currentProfile = loadProfile();
+        if (currentProfile.role !== "client") {
+          showToast(
+            "Halaman ini hanya untuk Client. Anda akan dialihkan ke profile.",
+            "error"
+          );
+          setTimeout(function () {
+            window.location.href = "profile.html";
+          }, 2000);
+        }
+
+        // Character counter
+        function setupCharCounter(inputId, counterId, maxLength) {
+          var input = get(inputId);
+          var counter = get(counterId);
+          if (!input || !counter) return;
+
+          input.addEventListener("input", function () {
+            var length = input.value.length;
+            counter.textContent = length;
+            counter.parentElement.classList.remove("warning", "error");
+            if (length > maxLength * 0.8) {
+              counter.parentElement.classList.add("warning");
+            }
+            if (length >= maxLength) {
+              counter.parentElement.classList.add("error");
+            }
+          });
+        }
+
+        setupCharCounter("jobTitle", "titleCounter", 100);
+        setupCharCounter("jobDescription", "descCounter", 1000);
+        setupCharCounter("jobRequirements", "reqCounter", 500);
+
+        // File upload handler
+        var fileInput = get("jobFile");
+        if (fileInput) {
+          fileInput.addEventListener("change", function (e) {
+            if (e.target.files && e.target.files[0]) {
+              var file = e.target.files[0];
+              var maxSize = 10 * 1024 * 1024; // 10MB
+
+              if (file.size > maxSize) {
+                showToast("Ukuran file terlalu besar! Maksimal 10MB", "error");
+                fileInput.value = "";
+                return;
+              }
+
+              get("fileName").textContent = file.name;
+              get("fileSelected").style.display = "inline-flex";
+              get("fileButtonText").textContent = "Ganti File";
+            }
+          });
+        }
+
+        // Real-time preview
+        function updatePreview() {
+          var title =
+            get("jobTitle").value.trim() ||
+            "[Judul pekerjaan akan muncul di sini]";
+          var desc =
+            get("jobDescription").value.trim() ||
+            "[Deskripsi pekerjaan akan muncul di sini]";
+          var budget = get("jobBudget").value.trim() || "Rp -";
+          var type = get("jobType").value || "Fixed-price";
+          var level = get("jobLevel").value || "Intermediate";
+          var category = get("jobCategory").value || "tekno";
+          var location = get("jobLocation").value.trim() || "Indonesia";
+
+          get("previewTitle").textContent = title;
+          get("previewDesc").textContent = desc;
+          get("previewBudget").innerHTML =
+            '<i class="fas fa-wallet"></i> ' + budget;
+          get("previewType").textContent = type;
+          get("previewLevel").textContent = level;
+          get("previewCategory").textContent = category;
+          get("previewLocation").textContent = location;
+        }
+
+        // Add event listeners for preview
+        [
+          "jobTitle",
+          "jobDescription",
+          "jobBudget",
+          "jobType",
+          "jobLevel",
+          "jobCategory",
+          "jobLocation",
+        ].forEach(function (id) {
+          var el = get(id);
+          if (el) {
+            el.addEventListener("input", updatePreview);
+            el.addEventListener("change", updatePreview);
+          }
+        });
+
+        // Set minimum date for deadline (today)
+        var deadlineInput = get("jobDeadline");
+        if (deadlineInput) {
+          var today = new Date().toISOString().split("T")[0];
+          deadlineInput.setAttribute("min", today);
+        }
+
+        // Form submission
+        var form = get("jobPostingForm");
+        if (form) {
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            console.log("Form submitted!");
+
+            // Get form values
+            var title = get("jobTitle").value.trim();
+            var description = get("jobDescription").value.trim();
+            var category = get("jobCategory").value;
+            var level = get("jobLevel").value;
+            var type = get("jobType").value;
+            var budget = get("jobBudget").value.trim();
+            var location = get("jobLocation").value.trim();
+            var deadline = get("jobDeadline").value;
+            var requirements = get("jobRequirements").value.trim();
+            var contactEmail = get("jobContactEmail").value.trim();
+            var contactPhone = get("jobContactPhone").value.trim();
+            var file =
+              fileInput && fileInput.files[0] ? fileInput.files[0] : null;
+
+            // Validation
+            if (!title || title.length < 5) {
+              showToast("Judul pekerjaan minimal 5 karakter", "error");
+              get("jobTitle").focus();
+              return;
+            }
+
+            if (!description || description.length < 20) {
+              showToast("Deskripsi pekerjaan minimal 20 karakter", "error");
+              get("jobDescription").focus();
+              return;
+            }
+
+            if (!category) {
+              showToast("Pilih kategori pekerjaan", "error");
+              get("jobCategory").focus();
+              return;
+            }
+
+            if (!level) {
+              showToast("Pilih level kesulitan", "error");
+              get("jobLevel").focus();
+              return;
+            }
+
+            if (!type) {
+              showToast("Pilih tipe pembayaran", "error");
+              get("jobType").focus();
+              return;
+            }
+
+            if (!budget) {
+              showToast("Masukkan budget pekerjaan", "error");
+              get("jobBudget").focus();
+              return;
+            }
+
+            // Get client info
+            var profile = loadProfile();
+
+            // Re-validate role to prevent client-side bypass
+            if (profile.role !== "client") {
+              showToast(
+                "❌ Akses ditolak! Hanya Client yang dapat memposting pekerjaan.",
+                "error"
+              );
+              submitBtn.classList.remove("btn-loading");
+              submitBtn.disabled = false;
+              console.warn(
+                "Blocked job posting attempt from role:",
+                profile.role
+              );
+              return;
+            }
+
+            var clientName = profile.name;
+            var clientEmail = contactEmail || profile.email;
+
+            // Generate tags
+            var tags = [category, level, type];
+            if (budget) tags.push(budget);
+
+            // Create task object
+            var taskObj = {
+              id: Date.now(),
+              title: title,
+              description: description,
+              desc: description,
+              budget: budget,
+              type: type,
+              level: level,
+              category: category,
+              location: location || "Indonesia",
+              tags: tags,
+              deadline: deadline || null,
+              requirements: requirements || null,
+              contactEmail: clientEmail,
+              contactPhone: contactPhone || null,
+              fileName: file ? file.name : null,
+              fileSize: file ? file.size : null,
+              uploadDate: new Date().toISOString(),
+              createdAt: new Date().toISOString(),
+              status: "open",
+              owner: clientName,
+              ownerEmail: profile.email,
+              clientVerified: false,
+              clientRating: 0,
+              clientSpent: "Rp 0",
+            };
+
+            console.log("Task object:", taskObj);
+
+            // Show loading state
+            var submitBtn = get("submitBtn");
+            submitBtn.classList.add("btn-loading");
+            submitBtn.disabled = true;
+
+            // Save to localStorage
+            try {
+              // Global storage
+              var tasks = JSON.parse(
+                localStorage.getItem("bantuin_tasks") || "[]"
+              );
+              tasks.unshift(taskObj);
+              localStorage.setItem("bantuin_tasks", JSON.stringify(tasks));
+
+              // User-specific storage
+              var userKey = "bantuin_user_tasks_" + profile.email;
+              var userTasks = JSON.parse(localStorage.getItem(userKey) || "[]");
+              userTasks.unshift(taskObj);
+              localStorage.setItem(userKey, JSON.stringify(userTasks));
+
+              // Admin storage for monitoring and oversight
+              var adminJobs = JSON.parse(
+                localStorage.getItem("bantuin_admin_jobs") || "[]"
+              );
+              var adminJobEntry = Object.assign({}, taskObj, {
+                submittedAt: new Date().toISOString(),
+                submittedBy: profile.name,
+                submitterEmail: profile.email,
+                submitterRole: profile.role,
+                reviewStatus: "pending",
+                reviewedAt: null,
+                reviewedBy: null,
+              });
+              adminJobs.unshift(adminJobEntry);
+              localStorage.setItem(
+                "bantuin_admin_jobs",
+                JSON.stringify(adminJobs)
+              );
+
+              console.log("Task saved! Total tasks:", tasks.length);
+              console.log(
+                "Job posted by:",
+                profile.name,
+                "(",
+                profile.role,
+                ")"
+              );
+              console.log("Saved to storages: global, user-specific, admin");
+
+              // Success
+              setTimeout(function () {
+                submitBtn.classList.remove("btn-loading");
+                submitBtn.disabled = false;
+                showToast("✅ Pekerjaan berhasil diposting!");
+
+                // Redirect after 1.5 seconds
+                setTimeout(function () {
+                  window.location.href = "cari-pekerjaan.html";
+                }, 1500);
+              }, 800);
+            } catch (err) {
+              submitBtn.classList.remove("btn-loading");
+              submitBtn.disabled = false;
+              showToast("Gagal menyimpan pekerjaan: " + err.message, "error");
+              console.error("Save error:", err);
+            }
+          });
+        }
+
+        // Auto-fill contact email from profile
+        var contactEmailInput = get("jobContactEmail");
+        if (contactEmailInput && !contactEmailInput.value) {
+          contactEmailInput.placeholder = currentProfile.email;
+        }
+      })();
+    </script>
+  </body>
+</html>

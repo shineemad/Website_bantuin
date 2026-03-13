@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Profile Badge</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 30px;
+      }
+      .section {
+        margin: 20px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+      }
+      .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin: 8px 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        animation: fadeInBadge 0.5s ease-in-out;
+      }
+      @keyframes fadeInBadge {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .role-badge-client {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .role-badge-talent {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+      }
+      .role-badge-admin {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+      }
+      .role-badge i {
+        font-size: 0.9rem;
+      }
+      .btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 5px;
+        font-weight: 600;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 13px;
+      }
+      .info {
+        padding: 10px;
+        background: #e7f3ff;
+        border-left: 4px solid #2196f3;
+        margin: 10px 0;
+      }
+      #badgePreview {
+        text-align: center;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🧪 Test Profile Badge System</h1>
+
+      <div class="section">
+        <h2>1. Current Storage Status</h2>
+        <button class="btn" onclick="checkStorage()">🔍 Check Storage</button>
+        <button class="btn" onclick="clearAllStorage()">🗑️ Clear All</button>
+        <pre id="storageInfo">Click "Check Storage" to view...</pre>
+      </div>
+
+      <div class="section">
+        <h2>2. Set Role for Testing</h2>
+        <button
+          class="btn"
+          onclick="setTestRole('client', 'John Doe', 'john@example.com')"
+        >
+          👔 Set as Client
+        </button>
+        <button
+          class="btn"
+          onclick="setTestRole('talent', 'Jane Smith', 'jane@example.com')"
+        >
+          ⭐ Set as Talent
+        </button>
+        <button
+          class="btn"
+          onclick="setTestRole('admin', 'Admin User', 'admin@example.com')"
+        >
+          🛡️ Set as Admin
+        </button>
+      </div>
+
+      <div class="section">
+        <h2>3. Badge Preview</h2>
+        <div id="badgePreview">
+          <p style="color: #666; margin-bottom: 15px">Badge will appear here</p>
+          <div id="badgeContainer"></div>
+        </div>
+        <button class="btn" onclick="testBadgeCreation()">
+          🎨 Generate Badge
+        </button>
+      </div>
+
+      <div class="section">
+        <h2>4. Test Profile Page</h2>
+        <div class="info">
+          <strong>ℹ️ Instructions:</strong><br />
+          1. Set role terlebih dahulu (pilih Client atau Talent)<br />
+          2. Klik tombol di bawah untuk buka profile.html<br />
+          3. Badge harus muncul di bawah nama dengan warna sesuai role
+        </div>
+        <button class="btn" onclick="window.open('profile.html', '_blank')">
+          🚀 Open Profile Page
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function checkStorage() {
+        const info = {
+          rpl_currentRole: localStorage.getItem("rpl_currentRole"),
+          bantuin_session: localStorage.getItem("bantuin_session"),
+          rpl_profile: localStorage.getItem("rpl_profile"),
+        };
+
+        document.getElementById("storageInfo").textContent = JSON.stringify(
+          info,
+          null,
+          2
+        );
+        console.log("Storage Info:", info);
+      }
+
+      function clearAllStorage() {
+        if (confirm("Clear all localStorage data?")) {
+          localStorage.clear();
+          alert("✅ Storage cleared!");
+          checkStorage();
+        }
+      }
+
+      function setTestRole(role, name, email) {
+        // Set role
+        localStorage.setItem("rpl_currentRole", role);
+
+        // Set session
+        const session = {
+          user: name,
+          email: email,
+          role: role,
+          isLoggedIn: true,
+        };
+        localStorage.setItem("bantuin_session", JSON.stringify(session));
+
+        // Set profile
+        const profile = {
+          name: name,
+          email: email,
+          role: role,
+        };
+        localStorage.setItem("rpl_profile", JSON.stringify(profile));
+
+        alert("✅ Role set to: " + role.toUpperCase() + "\nName: " + name);
+        checkStorage();
+        testBadgeCreation();
+      }
+
+      function testBadgeCreation() {
+        const currentRole = localStorage.getItem("rpl_currentRole") || "client";
+        const container = document.getElementById("badgeContainer");
+
+        container.innerHTML = "";
+
+        const roleBadge = document.createElement("div");
+        let roleIcon = "";
+        let roleName = "";
+        let badgeClass = "role-badge ";
+
+        if (currentRole === "client") {
+          roleIcon = '<i class="fas fa-briefcase"></i>';
+          roleName = "Client";
+          badgeClass += "role-badge-client";
+        } else if (currentRole === "talent") {
+          roleIcon = '<i class="fas fa-star"></i>';
+          roleName = "Talent";
+          badgeClass += "role-badge-talent";
+        } else if (currentRole === "admin") {
+          roleIcon = '<i class="fas fa-shield-alt"></i>';
+          roleName = "Admin";
+          badgeClass += "role-badge-admin";
+        }
+
+        roleBadge.className = badgeClass;
+        roleBadge.innerHTML = roleIcon + "<span>" + roleName + "</span>";
+        container.appendChild(roleBadge);
+
+        console.log("Badge created for role:", currentRole);
+      }
+
+      // Auto-check on load
+      window.onload = function () {
+        checkStorage();
+        const role = localStorage.getItem("rpl_currentRole");
+        if (role) {
+          testBadgeCreation();
+        }
+      };
+    </script>
+  </body>
+</html>

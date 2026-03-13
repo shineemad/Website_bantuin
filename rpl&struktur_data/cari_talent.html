@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cari Talent - bantu.in</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* --- 1. THEME VARIABLES --- */
+      :root {
+        --bg-body: #ffffff;
+        --bg-alt: #f7f7f7;
+        --text-main: #000000;
+        --text-sub: #555555;
+        --border-color: #e0e0e0;
+        --max-w: 1280px;
+        --radius-pill: 50px;
+        --radius-card: 16px;
+        --transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        --accent-green: #22c55e;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text-main);
+        background-color: var(--bg-body);
+        line-height: 1.5;
+        overflow-x: hidden;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: var(--transition);
+      }
+      ul {
+        list-style: none;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+
+      /* --- UTILITIES --- */
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      /* --- NAVBAR --- */
+      nav {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 20px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid transparent;
+        transition: var(--transition);
+      }
+      nav.scrolled {
+        padding: 15px 0;
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+      .nav-container {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .nav-menu {
+        display: flex;
+        gap: 32px;
+        margin-left: 40px;
+      }
+      .nav-menu a {
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: #333;
+        position: relative;
+        padding-bottom: 4px;
+        transition: var(--transition);
+      }
+      .nav-menu a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #000;
+        transition: width 0.3s ease;
+      }
+      .nav-menu a:hover::after {
+        width: 100%;
+      }
+      .nav-menu a:hover {
+        color: #000;
+      }
+      .nav-menu a.active {
+        font-weight: 700;
+        color: #000;
+      }
+      .nav-menu a.active::after {
+        width: 100%;
+        background-color: #000;
+      }
+      .nav-actions {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .btn {
+        padding: 10px 24px;
+        border-radius: var(--radius-pill);
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: var(--transition);
+        border: 1px solid transparent;
+      }
+      .btn-outline {
+        background: transparent;
+        border-color: #ddd;
+        color: #000;
+      }
+      .btn-outline:hover {
+        border-color: #000;
+      }
+      .btn-primary {
+        background: #000;
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: #333;
+        transform: translateY(-2px);
+      }
+      .btn-icon {
+        font-size: 1.1rem;
+        color: #333;
+        padding: 8px;
+      }
+
+      /* --- HERO --- */
+      .search-hero-section {
+        padding: 40px 0 20px;
+        width: 100%;
+      }
+      .search-hero-box {
+        background-color: #f4f4f5;
+        border-radius: 40px;
+        padding: 60px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-content-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 40px;
+        align-items: center;
+      }
+      .hero-left-content {
+        z-index: 2;
+        position: relative;
+      }
+      .search-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 24px;
+        letter-spacing: -1px;
+        color: #111;
+      }
+      .badge-pill {
+        display: inline-block;
+        background: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Search Input */
+      .search-input-wrapper {
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 50px;
+        padding: 8px 8px 8px 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        margin-bottom: 14px;
+      }
+      .search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        color: #333;
+      }
+      .btn-search {
+        background: #000;
+        color: white;
+        border: none;
+        padding: 14px 32px;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .btn-search:hover {
+        background: #333;
+      }
+
+      .hero-right-image {
+        height: 400px;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+      .hero-slider-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* --- CONTENT LAYOUT --- */
+      .page-wrapper {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto 80px;
+      }
+      .content-grid {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 40px;
+        margin-top: 40px;
+      }
+
+      /* SIDEBAR FILTER */
+      .sidebar-box {
+        position: sticky;
+        top: 100px;
+      }
+      .filter-main-title {
+        font-size: 1.2rem;
+        font-weight: 800;
+        margin-bottom: 24px;
+        display: block;
+      }
+      .filter-group {
+        margin-bottom: 30px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+      }
+      .filter-group:last-child {
+        border-bottom: none;
+      }
+      .filter-subtitle {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        display: block;
+        color: #111;
+      }
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        font-size: 0.9rem;
+        color: #555;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .checkbox-row:hover {
+        color: #000;
+      }
+      .checkbox-row input {
+        accent-color: #000;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+      }
+
+      /* TALENT FEED */
+      .feed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .feed-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+
+      /* TALENT CARD STYLE */
+      .talent-card {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 20px;
+        padding: 32px;
+        transition: var(--transition);
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .talent-card:hover {
+        border-color: #bbb;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transform: translateY(-3px);
+      }
+
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .profile-info {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .avatar-circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #eee;
+        overflow: hidden;
+      }
+      .avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .talent-name {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #111;
+        margin-bottom: 4px;
+      }
+      .talent-role {
+        font-size: 0.9rem;
+        color: #666;
+        font-weight: 500;
+      }
+
+      .talent-rate {
+        font-weight: 700;
+        color: #111;
+        font-size: 1rem;
+      }
+      .talent-rate span {
+        font-weight: 400;
+        font-size: 0.85rem;
+        color: #666;
+      }
+
+      .talent-desc {
+        font-size: 0.95rem;
+        color: var(--text-sub);
+        line-height: 1.6;
+      }
+
+      .tag-container {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .tag-pill {
+        background: #f4f4f5;
+        color: #555;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .card-footer {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 0.85rem;
+        color: #555;
+        padding-top: 20px;
+        border-top: 1px solid #f5f5f5;
+      }
+      .rating-box {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 700;
+        color: #111;
+      }
+      .text-green {
+        color: var(--accent-green);
+      }
+
+      /* Footer & Responsive */
+      footer {
+        background: #000;
+        color: #fff;
+        padding: 80px 0 40px;
+        margin-top: 80px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto 60px;
+      }
+      .footer-brand .footer-logo-img {
+        height: 40px;
+        width: auto;
+        margin-bottom: 20px;
+        filter: invert(1);
+      }
+      .footer-links h4 {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+      .footer-links ul {
+        list-style: none;
+      }
+      .footer-links ul li {
+        margin-bottom: 12px;
+      }
+      .footer-links ul li a {
+        color: #888;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      .footer-links ul li a:hover {
+        color: white;
+      }
+      .footer-bottom {
+        width: 90%;
+        max-width: var(--max-w);
+        margin: 0 auto;
+        border-top: 1px solid #333;
+        padding-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        color: #666;
+      }
+      .social-icons a {
+        margin-left: 20px;
+        color: #fff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      .social-icons a:hover {
+        color: var(--accent-green);
+      }
+
+      /* PAGINATION */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 40px 0 60px;
+      }
+      .pagination-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid #eee;
+        background: white;
+        font-weight: 600;
+        color: #666;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Inter", sans-serif;
+      }
+      .pagination-btn.active {
+        background: #000;
+        color: white;
+        border-color: #000;
+      }
+      .pagination-btn:hover:not(.active):not(:disabled) {
+        background: #f5f5f5;
+      }
+      .pagination-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
+      /* Save Talent Button */
+      .btn-save-talent {
+        background: transparent;
+        border: none;
+        color: #999;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 8px;
+        transition: all 0.2s ease;
+      }
+      .btn-save-talent:hover {
+        color: #22c55e;
+        transform: scale(1.1);
+      }
+
+      @media (max-width: 640px) {
+        .pagination {
+          gap: 8px;
+          margin: 30px 0 50px;
+        }
+      }
+
+      @media (max-width: 960px) {
+        .hero-content-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-right-image {
+          display: none;
+        }
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+        .sidebar-box {
+          display: none; /* In real app, make this a drawer */
+        }
+        .nav-menu {
+          display: none;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          gap: 20px;
+        }
+        .social-icons a {
+          margin-left: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav id="navbar">
+      <div class="nav-container">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <a
+            href="beranda.html"
+            class="nav-logo"
+            style="display: flex; align-items: center; gap: 8px"
+          >
+            <img src="bantuin.svg" alt="bantu.in logo" style="height: 32px" />
+          </a>
+          <div class="nav-menu">
+            <a href="beranda.html">Beranda</a>
+            <a href="cari_talent.html" class="active">Cari Talent</a>
+            <a href="cari-pekerjaan.html">Cari Pekerjaan</a>
+            <a href="enterprise.html">Enterprise</a>
+            <a href="kenapa-kami.html">Kenapa Kami</a>
+          </div>
+        </div>
+        <div class="nav-actions">
+          <a href="#" class="btn-icon"><i class="far fa-bookmark"></i></a>
+          <a href="login.html" class="btn btn-outline">Masuk</a>
+          <a href="select.html" class="btn btn-primary">Daftar</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="search-hero-section reveal active">
+      <div class="page-wrapper" style="margin-bottom: 0">
+        <div class="search-hero-box">
+          <div class="hero-content-grid">
+            <div class="hero-left-content">
+              <h1 class="search-title">
+                Temukan Profesional untuk Proyek Anda
+              </h1>
+              <p
+                style="
+                  color: var(--text-sub);
+                  max-width: 560px;
+                  margin-bottom: 24px;
+                "
+              >
+                Cari freelancer berdasarkan skill, kategori, dan rating. Filter
+                sesuai kebutuhan Anda.
+              </p>
+
+              <div class="search-input-wrapper">
+                <i
+                  class="fas fa-search"
+                  style="color: #999; margin-right: 12px"
+                ></i>
+                <input
+                  type="text"
+                  id="searchInput"
+                  class="search-input"
+                  placeholder="Cari nama atau skill (misal: Java, Logo)..."
+                />
+                <button class="btn-search" onclick="applyTextFilter()">
+                  Cari
+                </button>
+              </div>
+            </div>
+            <div class="hero-right-image">
+              <img
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Talent"
+                class="hero-slider-img"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-wrapper">
+      <div class="content-grid">
+        <aside class="sidebar-box reveal active">
+          <div class="filter-main-title">Filter Talent</div>
+
+          <div class="filter-group">
+            <label class="filter-subtitle">Kategori Keahlian</label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="category" value="it" /> Web & IT
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="category" value="desain" /> Desain &
+              Kreatif
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="category" value="penulisan" />
+              Penulisan
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="category" value="marketing" />
+              Digital Marketing
+            </label>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-subtitle">Level Pengalaman</label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="level" value="junior" /> Junior
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="level" value="intermediate" />
+              Intermediate
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="level" value="expert" /> Expert
+            </label>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-subtitle">Ketersediaan</label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="availability" value="available" />
+              Tersedia Sekarang
+            </label>
+          </div>
+        </aside>
+
+        <main class="feed">
+          <div class="feed-header reveal active">
+            <h1 class="feed-title">Daftar Talent</h1>
+            <div class="sort-label">
+              Menampilkan <strong id="count-display">4</strong> profesional
+            </div>
+          </div>
+
+          <div
+            class="talent-card reveal active"
+            data-category="it"
+            data-level="expert"
+            data-availability="available"
+          >
+            <div class="card-top">
+              <div class="profile-info">
+                <div class="avatar-circle">
+                  <img
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                    class="avatar-img"
+                    alt="User"
+                  />
+                </div>
+                <div>
+                  <h3 class="talent-name">Andi Saputra</h3>
+                  <div class="talent-role">Full Stack Developer</div>
+                </div>
+              </div>
+              <div class="talent-rate">Rp 250rb <span>/ jam</span></div>
+            </div>
+
+            <p class="talent-desc">
+              Spesialis pengembangan website dengan React.js dan Node.js.
+              Berpengalaman 5+ tahun menangani klien Enterprise.
+            </p>
+
+            <div class="tag-container">
+              <span class="tag-pill">Web & IT</span>
+              <span class="tag-pill">React JS</span>
+              <span class="tag-pill">Node.js</span>
+              <span class="tag-pill">Expert</span>
+            </div>
+
+            <div class="card-footer">
+              <div class="rating-box">
+                <i class="fas fa-star text-green"></i> 5.0 (42 Review)
+              </div>
+              <div><i class="fas fa-map-marker-alt"></i> Jakarta</div>
+              <div class="text-green">
+                <i class="fas fa-check-circle"></i> Tersedia
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="talent-card reveal"
+            data-category="desain"
+            data-level="intermediate"
+            data-availability="busy"
+          >
+            <div class="card-top">
+              <div class="profile-info">
+                <div class="avatar-circle">
+                  <img
+                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                    class="avatar-img"
+                    alt="User"
+                  />
+                </div>
+                <div>
+                  <h3 class="talent-name">Siti Aminah</h3>
+                  <div class="talent-role">UI/UX Designer</div>
+                </div>
+              </div>
+              <button
+                class="btn-save-talent"
+                data-talent="Siti Aminah"
+                onclick="toggleSaveTalent('Siti Aminah')"
+                title="Simpan Talent"
+              >
+                <i class="far fa-bookmark"></i>
+              </button>
+            </div>
+
+            <p class="talent-desc">
+              Membantu startup membuat desain aplikasi yang user-friendly dan
+              estetis. Ahli menggunakan Figma dan Adobe XD.
+            </p>
+
+            <div class="tag-container">
+              <span class="tag-pill">Desain</span>
+              <span class="tag-pill">Figma</span>
+              <span class="tag-pill">Mobile App</span>
+              <span class="tag-pill">Intermediate</span>
+            </div>
+
+            <div class="card-footer">
+              <div class="rating-box">
+                <i class="fas fa-star text-green"></i> 4.8 (15 Review)
+              </div>
+              <div><i class="fas fa-map-marker-alt"></i> Bandung</div>
+            </div>
+          </div>
+
+          <div
+            class="talent-card reveal"
+            data-category="penulisan"
+            data-level="junior"
+            data-availability="available"
+          >
+            <div class="card-top">
+              <div class="profile-info">
+                <div class="avatar-circle">
+                  <img
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                    class="avatar-img"
+                    alt="User"
+                  />
+                </div>
+                <div>
+                  <h3 class="talent-name">Budi Santoso</h3>
+                  <div class="talent-role">SEO Content Writer</div>
+                </div>
+              </div>
+              <button
+                class="btn-save-talent"
+                data-talent="Budi Santoso"
+                onclick="toggleSaveTalent('Budi Santoso')"
+                title="Simpan Talent"
+              >
+                <i class="far fa-bookmark"></i>
+              </button>
+            </div>
+
+            <p class="talent-desc">
+              Penulis artikel SEO friendly untuk blog dan website bisnis. Siap
+              membantu menaikkan traffic website Anda.
+            </p>
+
+            <div class="tag-container">
+              <span class="tag-pill">Penulisan</span>
+              <span class="tag-pill">SEO</span>
+              <span class="tag-pill">Blog</span>
+              <span class="tag-pill">Junior</span>
+            </div>
+
+            <div class="card-footer">
+              <div class="rating-box">
+                <i class="fas fa-star text-green"></i> 4.5 (8 Review)
+              </div>
+              <div><i class="fas fa-map-marker-alt"></i> Surabaya</div>
+              <div class="text-green">
+                <i class="fas fa-check-circle"></i> Tersedia
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="talent-card reveal"
+            data-category="it"
+            data-level="intermediate"
+            data-availability="available"
+          >
+            <div class="card-top">
+              <div class="profile-info">
+                <div class="avatar-circle">
+                  <img
+                    src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                    class="avatar-img"
+                    alt="User"
+                  />
+                </div>
+                <div>
+                  <h3 class="talent-name">Rian Pratama</h3>
+                  <div class="talent-role">WordPress Developer</div>
+                </div>
+              </div>
+              <button
+                class="btn-save-talent"
+                data-talent="Rian Pratama"
+                onclick="toggleSaveTalent('Rian Pratama')"
+                title="Simpan Talent"
+              >
+                <i class="far fa-bookmark"></i>
+              </button>
+            </div>
+
+            <p class="talent-desc">
+              Spesialis perbaikan bug WordPress, pembuatan tema custom, dan
+              optimasi kecepatan website (Elementor Expert).
+            </p>
+
+            <div class="tag-container">
+              <span class="tag-pill">Web & IT</span>
+              <span class="tag-pill">WordPress</span>
+              <span class="tag-pill">PHP</span>
+            </div>
+
+            <div class="card-footer">
+              <div class="rating-box">
+                <i class="fas fa-star text-green"></i> 4.9 (24 Review)
+              </div>
+              <div><i class="fas fa-map-marker-alt"></i> Yogyakarta</div>
+              <div class="text-green">
+                <i class="fas fa-check-circle"></i> Tersedia
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <!-- PAGINATION -->
+    <div class="page-wrapper">
+      <div class="pagination">
+        <button class="pagination-btn active">1</button>
+        <button class="pagination-btn">2</button>
+        <button class="pagination-btn">3</button>
+        <button class="pagination-btn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Get user session info
+      function getUserSession() {
+        try {
+          if (
+            window.RPLAuth &&
+            typeof window.RPLAuth.getProfile === "function"
+          ) {
+            return window.RPLAuth.getProfile();
+          }
+        } catch (e) {}
+        try {
+          var s = JSON.parse(localStorage.getItem("bantuin_session") || "null");
+          if (s) {
+            return {
+              name: s.user || "guest",
+              email: s.email || "",
+              role:
+                s.role || localStorage.getItem("rpl_currentRole") || "client",
+            };
+          }
+        } catch (e) {}
+        return null;
+      }
+
+      // Get saved talents for current user
+      function getSavedTalents() {
+        var user = getUserSession();
+        if (!user || !user.email) return [];
+        try {
+          var key = "bantuin_saved_talents_" + user.email;
+          var saved = JSON.parse(localStorage.getItem(key) || "[]");
+          return Array.isArray(saved) ? saved : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      // Save talent to user's saved list
+      function toggleSaveTalent(talentName) {
+        var user = getUserSession();
+        if (!user || !user.email) {
+          alert("Silakan login terlebih dahulu untuk menyimpan talent");
+          window.location.href = "login.html";
+          return;
+        }
+
+        var key = "bantuin_saved_talents_" + user.email;
+        var saved = getSavedTalents();
+        var index = saved.indexOf(talentName);
+
+        if (index > -1) {
+          saved.splice(index, 1);
+        } else {
+          saved.push(talentName);
+        }
+
+        localStorage.setItem(key, JSON.stringify(saved));
+        updateSaveButtons();
+      }
+
+      // Update all save button states
+      function updateSaveButtons() {
+        var savedTalents = getSavedTalents();
+        document.querySelectorAll(".btn-save-talent").forEach(function (btn) {
+          var talentName = btn.getAttribute("data-talent");
+          var icon = btn.querySelector("i");
+          if (savedTalents.includes(talentName)) {
+            icon.className = "fas fa-bookmark";
+            btn.style.color = "#22c55e";
+          } else {
+            icon.className = "far fa-bookmark";
+            btn.style.color = "";
+          }
+        });
+      }
+
+      // inject stored talents (posted from profile) before filter logic
+      try {
+        var storedT = JSON.parse(
+          localStorage.getItem("bantuin_talents") || "[]"
+        );
+        console.log("Loading talents from localStorage:", storedT);
+        console.log("Total talents found:", storedT.length);
+
+        if (Array.isArray(storedT) && storedT.length) {
+          var feedMain = document.querySelector("main.feed");
+          console.log("Feed container found:", feedMain);
+
+          if (feedMain) {
+            // insert each stored talent as a card at the top
+            storedT.reverse().forEach(function (t, index) {
+              console.log("Processing talent #" + (index + 1) + ":", t);
+
+              var card = document.createElement("div");
+              card.className = "talent-card reveal";
+              card.setAttribute("data-category", t.category || "it");
+              card.setAttribute("data-level", t.level || "intermediate");
+              card.setAttribute(
+                "data-availability",
+                t.availability || "available"
+              );
+
+              // Generate initials from owner name
+              var initials =
+                (t.owner || "U")
+                  .split(/\s+/)
+                  .map(function (s) {
+                    return s[0];
+                  })
+                  .slice(0, 2)
+                  .join("")
+                  .toUpperCase() || "U";
+
+              // Format tanggal bergabung
+              var joinDate = "Baru Bergabung";
+              if (t.createdAt) {
+                try {
+                  var date = new Date(t.createdAt);
+                  joinDate = date.toLocaleDateString("id-ID", {
+                    month: "short",
+                    year: "numeric",
+                  });
+                } catch (e) {}
+              }
+
+              // Generate category tags
+              var categoryTags = "";
+              if (t.category) {
+                var categoryMap = {
+                  it: "Web & IT",
+                  design: "Design",
+                  marketing: "Marketing",
+                  writing: "Writing",
+                };
+                categoryTags =
+                  '<span class="tag-pill">' +
+                  (categoryMap[t.category] || t.category) +
+                  "</span>";
+              }
+
+              // Availability status
+              var availStatus =
+                t.availability === "available"
+                  ? '<div class="text-green"><i class="fas fa-check-circle"></i> Tersedia</div>'
+                  : '<div style="color: #999;"><i class="fas fa-clock"></i> Tidak Tersedia</div>';
+
+              card.innerHTML = `
+                <div class="card-top">
+                  <div class="profile-info">
+                    <div class="avatar-circle">
+                      <div class="avatar-img" style="display:flex;align-items:center;justify-content:center;font-weight:700;background:#f0f0f0;color:#333;width:100%;height:100%;border-radius:50%;">
+                        ${initials}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 class="talent-name">${t.owner || "(Tanpa Nama)"}</h3>
+                      <div class="talent-role">${t.name || "Talent"}</div>
+                    </div>
+                  </div>
+                  <button 
+                    class="btn-save-talent" 
+                    data-talent="${t.owner || "talent"}"
+                    onclick="toggleSaveTalent('${(t.owner || "talent").replace(
+                      /'/g,
+                      "\\'"
+                    )}')"
+                    title="Simpan talent ini">
+                    <i class="far fa-bookmark"></i>
+                  </button>
+                </div>
+                <p class="talent-desc">${t.desc || ""}</p>
+                <div class="tag-container">${categoryTags}</div>
+                <div class="card-footer">
+                  <div class="rating-box"><i class="fas fa-star text-green"></i> 5.0 (Baru)</div>
+                  <div><i class="fas fa-calendar-alt"></i> ${joinDate}</div>
+                  ${availStatus}
+                </div>
+              `;
+              // insert before existing first card (so newest appear first)
+              var first = feedMain.querySelector(".talent-card");
+              if (first) feedMain.insertBefore(card, first);
+              else feedMain.appendChild(card);
+
+              console.log("Talent card #" + (index + 1) + " added to page");
+            });
+
+            console.log(
+              "All " + storedT.length + " talents rendered successfully!"
+            );
+          } else {
+            console.error("Feed container not found!");
+          }
+        } else {
+          console.log("No talents found in localStorage or empty array");
+        }
+      } catch (err) {
+        console.error("Could not load stored talents", err);
+      }
+
+      // --- LOGIKA FILTER TALENT ---
+      document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const countDisplay = document.getElementById("count-display");
+
+        function filterTalents() {
+          // Get semua talent cards (termasuk yang baru ditambahkan)
+          const cards = document.querySelectorAll(".talent-card");
+
+          // 1. Ambil nilai yang dicentang
+          const selectedCategories = Array.from(
+            document.querySelectorAll('input[name="category"]:checked')
+          ).map((cb) => cb.value);
+          const selectedLevels = Array.from(
+            document.querySelectorAll('input[name="level"]:checked')
+          ).map((cb) => cb.value);
+          const selectedAvailability = Array.from(
+            document.querySelectorAll('input[name="availability"]:checked')
+          ).map((cb) => cb.value);
+
+          let visibleCount = 0;
+
+          // 2. Loop setiap kartu talent
+          cards.forEach((card) => {
+            const cardCat = card.getAttribute("data-category");
+            const cardLevel = card.getAttribute("data-level");
+            const cardAvail = card.getAttribute("data-availability");
+
+            // Cek apakah kartu ini cocok dengan filter (jika filter kosong, anggap cocok)
+            const matchCat =
+              selectedCategories.length === 0 ||
+              selectedCategories.includes(cardCat);
+            const matchLevel =
+              selectedLevels.length === 0 || selectedLevels.includes(cardLevel);
+            const matchAvail =
+              selectedAvailability.length === 0 ||
+              selectedAvailability.includes(cardAvail);
+
+            // 3. Tampilkan atau Sembunyikan
+            if (matchCat && matchLevel && matchAvail) {
+              card.classList.remove("hidden");
+              visibleCount++;
+            } else {
+              card.classList.add("hidden");
+            }
+          });
+
+          // Update jumlah talent yang tampil
+          countDisplay.innerText = visibleCount;
+        }
+
+        // Pasang event listener ke semua checkbox
+        checkboxes.forEach((cb) =>
+          cb.addEventListener("change", filterTalents)
+        );
+
+        // Initialize save button states on page load
+        updateSaveButtons();
+
+        // Initial filter untuk menghitung semua talent yang tampil
+        filterTalents();
+      });
+
+      // --- TEXT SEARCH FILTER (Sederhana) ---
+      function applyTextFilter() {
+        const input = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const cards = document.querySelectorAll(".talent-card");
+        let visibleCount = 0;
+
+        cards.forEach((card) => {
+          const text = card.innerText.toLowerCase();
+          if (text.includes(input)) {
+            card.classList.remove("hidden");
+            visibleCount++;
+          } else {
+            card.classList.add("hidden");
+          }
+        });
+
+        // Update counter
+        const countDisplay = document.getElementById("count-display");
+        if (countDisplay) {
+          countDisplay.innerText = visibleCount;
+        }
+      }
+
+      // --- NAVBAR SCROLL ---
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // --- SCROLL REVEAL ANIMATION ---
+      function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveals[i].getBoundingClientRect().top;
+          var elementVisible = 100;
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+          }
+        }
+      }
+      window.addEventListener("scroll", reveal);
+      reveal();
+    </script>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img
+            src="bantuin.svg"
+            alt="bantu.in logo"
+            class="footer-logo-img nav-logo-img"
+          />
+          <p>
+            Platform #1 di Indonesia untuk menghubungkan bantuan lokal dengan
+            kebutuhan harian dan bisnis.
+          </p>
+        </div>
+        <div class="footer-links">
+          <h4>Klien</h4>
+          <ul>
+            <li><a href="#">Cara Posting</a></li>
+            <li><a href="cari_talent.html">Cari Talent</a></li>
+            <li><a href="enterprise.html">Enterprise</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Talent</h4>
+          <ul>
+            <li><a href="cari-pekerjaan.html">Cari Pekerjaan</a></li>
+            <li><a href="#">Profil Sukses</a></li>
+            <li><a href="#">Komunitas</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Perusahaan</h4>
+          <ul>
+            <li><a href="kenapa-kami.html">Tentang Kami</a></li>
+            <li><a href="#">Karir</a></li>
+            <li><a href="#">Hubungi Kami</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2025 bantu.in Global Inc.</div>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </footer>
+  </body>
+  <script src="assets/js/error-handler.js"></script>
+  <script src="assets/js/loading-state.js"></script>
+  <script src="assets/js/session-ui.js" defer></script>
+</html>

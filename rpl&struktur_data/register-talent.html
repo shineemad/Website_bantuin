@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Daftar Talent - bantu.in</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-body: #ffffff;
+        --bg-alt: #f8f9fa;
+        --text-main: #111111;
+        --text-sub: #666666;
+        --border-color: #e5e7eb;
+        --primary: #000000;
+        --accent-green: #22c55e;
+        --radius-pill: 50px;
+        --radius-card: 20px;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--bg-body);
+        color: var(--text-main);
+      }
+
+      /* LEFT SIDE - Image/Photo */
+      .hero-side {
+        background: #111;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-side::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.7) 0%,
+          rgba(0, 0, 0, 0.5) 100%
+        );
+        z-index: 2;
+      }
+      .hero-image-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+      .slider-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+      .slider-image.active {
+        opacity: 1;
+      }
+      .slider-dots {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 3;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .dot.active {
+        background: #22c55e;
+        width: 30px;
+        border-radius: 5px;
+      }
+
+      /* RIGHT SIDE - Register Form */
+      .form-side {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 60px 80px;
+        background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+        overflow-y: auto;
+      }
+      .form-container {
+        max-width: 460px;
+        width: 100%;
+      }
+      .mobile-logo {
+        display: none;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 32px;
+      }
+      .mobile-logo img {
+        height: 36px;
+      }
+      .mobile-logo .name {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 40px;
+        transition: var(--transition);
+        cursor: pointer;
+      }
+      .back-link:hover {
+        color: var(--primary);
+        gap: 12px;
+      }
+      .form-header {
+        margin-bottom: 40px;
+      }
+      .form-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+        letter-spacing: -1px;
+        color: var(--text-main);
+      }
+      .form-header p {
+        color: var(--text-sub);
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+      .field {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-main);
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="tel"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 16px 18px;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: var(--transition);
+        background: var(--bg-body);
+      }
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="password"]:focus,
+      input[type="tel"]:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: #9ca3af;
+      }
+      select {
+        cursor: pointer;
+      }
+      .checkbox-field {
+        margin-bottom: 24px;
+        display: flex;
+        align-items: start;
+        gap: 12px;
+      }
+      .checkbox-field input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        cursor: pointer;
+      }
+      .checkbox-field label {
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 400;
+        cursor: pointer;
+        line-height: 1.5;
+      }
+      .checkbox-field label a {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: underline;
+      }
+      .btn {
+        width: 100%;
+        padding: 16px 28px;
+        border-radius: var(--radius-pill);
+        border: 0;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1.05rem;
+        transition: var(--transition);
+        font-family: inherit;
+        margin-top: 8px;
+      }
+      .btn.primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .btn.primary:hover {
+        background: #333;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .login-link {
+        text-align: center;
+        margin-top: 24px;
+        font-size: 0.95rem;
+        color: var(--text-sub);
+      }
+      .login-link a {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: underline;
+      }
+      .login-link a:hover {
+        color: #333;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        body {
+          grid-template-columns: 1fr;
+        }
+        .hero-side {
+          display: none;
+        }
+        .form-side {
+          padding: 50px 40px;
+          justify-content: flex-start;
+          padding-top: 60px;
+        }
+        .mobile-logo {
+          display: flex;
+        }
+        .back-link {
+          margin-bottom: 32px;
+        }
+      }
+      @media (max-width: 768px) {
+        .form-side {
+          padding: 40px 30px;
+        }
+        .form-header h1 {
+          font-size: 2.2rem;
+        }
+        .form-header p {
+          font-size: 1rem;
+        }
+      }
+      @media (max-width: 640px) {
+        .form-side {
+          padding: 30px 24px;
+        }
+        .form-header {
+          margin-bottom: 32px;
+        }
+        .form-header h1 {
+          font-size: 1.875rem;
+        }
+        .form-header p {
+          font-size: 0.95rem;
+        }
+        .back-link {
+          font-size: 0.9rem;
+          margin-bottom: 24px;
+        }
+        .field {
+          margin-bottom: 18px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        select,
+        textarea {
+          padding: 14px 16px;
+          font-size: 0.95rem;
+        }
+        .btn {
+          padding: 14px 24px;
+          font-size: 1rem;
+        }
+      }
+    </style>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/mechanism.js" defer></script>
+  </head>
+  <body>
+    <!-- LEFT SIDE - Image/Photo -->
+    <div class="hero-side">
+      <div class="hero-image-container">
+        <img
+          class="slider-image active"
+          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80"
+          alt="Talent working"
+        />
+        <img
+          class="slider-image"
+          src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&q=80"
+          alt="Freelancer"
+        />
+        <img
+          class="slider-image"
+          src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80"
+          alt="Team success"
+        />
+        <img
+          class="slider-image"
+          src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=1200&q=80"
+          alt="Professional work"
+        />
+      </div>
+      <div class="slider-dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+        <span class="dot" data-slide="3"></span>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE - Register Form -->
+    <div class="form-side">
+      <div class="form-container">
+        <div class="mobile-logo">
+          <img src="bantuin.svg" alt="bantu.in logo" />
+          <div class="name">bantu.in</div>
+        </div>
+
+        <div class="form-header">
+          <h1>Daftar Sebagai Talent</h1>
+          <p>
+            Mulai tawarkan keahlian Anda dan dapatkan penghasilan dari berbagai
+            pekerjaan.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="fullname">Nama Lengkap</label>
+          <input
+            id="fullname"
+            type="text"
+            placeholder="Masukkan nama lengkap"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="nama@email.com"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="phone">Nomor Telepon</label>
+          <input id="phone" type="tel" placeholder="08xxxxxxxxxx" required />
+        </div>
+
+        <div class="field">
+          <label for="skills">Keahlian / Skill</label>
+          <input
+            id="skills"
+            type="text"
+            placeholder="Contoh: Desain Grafis, Fotografi, Admin"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="experience">Pengalaman</label>
+          <select id="experience" required>
+            <option value="">Pilih pengalaman</option>
+            <option value="beginner">Pemula (< 1 tahun)</option>
+            <option value="intermediate">Menengah (1-3 tahun)</option>
+            <option value="advanced">Berpengalaman (3-5 tahun)</option>
+            <option value="expert">Expert (> 5 tahun)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="bio">Bio / Deskripsi Singkat</label>
+          <textarea
+            id="bio"
+            placeholder="Ceritakan tentang keahlian dan pengalaman Anda..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Minimal 8 karakter"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="confirm-password">Konfirmasi Password</label>
+          <input
+            id="confirm-password"
+            type="password"
+            placeholder="Ulangi password"
+            required
+          />
+        </div>
+
+        <div class="checkbox-field">
+          <input type="checkbox" id="terms" required />
+          <label for="terms">
+            Saya setuju dengan <a href="#">Syarat & Ketentuan</a> dan
+            <a href="#">Kebijakan Privasi</a> bantu.in
+          </label>
+        </div>
+
+        <button id="registerBtn" class="btn primary">Daftar Sekarang</button>
+
+        <div class="login-link">
+          Sudah punya akun? <a href="login.html">Masuk di sini</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Image Slider
+      const slides = document.querySelectorAll(".slider-image");
+      const dots = document.querySelectorAll(".dot");
+      let currentSlide = 0;
+
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.classList.remove("active");
+          dots[i].classList.remove("active");
+        });
+        slides[index].classList.add("active");
+        dots[index].classList.add("active");
+      }
+
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+      }
+
+      // Auto slide every 4 seconds
+      setInterval(nextSlide, 4000);
+
+      // Manual navigation with dots
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          currentSlide = index;
+          showSlide(currentSlide);
+        });
+      });
+
+      // Register form handling
+      document
+        .getElementById("registerBtn")
+        .addEventListener("click", async () => {
+          const fullname = document.getElementById("fullname").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const phone = document.getElementById("phone").value.trim();
+          const skills = document.getElementById("skills").value.trim();
+          const experience = document.getElementById("experience").value;
+          const bio = document.getElementById("bio").value.trim();
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirm-password").value;
+          const terms = document.getElementById("terms").checked;
+
+          // Validation
+          if (
+            !fullname ||
+            !email ||
+            !phone ||
+            !skills ||
+            !experience ||
+            !bio ||
+            !password ||
+            !confirmPassword
+          ) {
+            alert("Mohon lengkapi semua field yang wajib diisi.");
+            return;
+          }
+
+          if (!terms) {
+            alert("Anda harus menyetujui Syarat & Ketentuan untuk mendaftar.");
+            return;
+          }
+
+          if (password !== confirmPassword) {
+            alert("Password dan konfirmasi password tidak cocok.");
+            return;
+          }
+
+          if (password.length < 8) {
+            alert("Password harus minimal 8 karakter.");
+            return;
+          }
+
+          // Email validation
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            alert("Format email tidak valid.");
+            return;
+          }
+
+          // Phone validation
+          if (phone.length < 10) {
+            alert("Nomor telepon tidak valid.");
+            return;
+          }
+
+          // Try to register using RPLAuth
+          if (window.RPLAuth) {
+            const res = await window.RPLAuth.registerUser(
+              email.toLowerCase(),
+              password,
+              {
+                name: fullname,
+                role: "talent",
+                phone: phone,
+                skills: skills,
+                experience: experience,
+                bio: bio,
+              }
+            );
+
+            if (!res.success) {
+              alert(res.message);
+              return;
+            }
+
+            // Registration successful - auto login
+            const session = {
+              user: email,
+              fullname: fullname,
+              role: "talent",
+              ts: Date.now(),
+            };
+            localStorage.setItem("bantuin_session", JSON.stringify(session));
+            localStorage.setItem("rpl_currentRole", "talent");
+            alert("Pendaftaran berhasil! Selamat datang di bantu.in");
+            location.href = "beranda.html";
+          } else {
+            // Fallback: simulated registration with auto login
+            const userData = {
+              fullname,
+              email,
+              phone,
+              skills,
+              experience,
+              bio,
+              role: "talent",
+              registeredAt: Date.now(),
+            };
+
+            localStorage.setItem(
+              "bantuin_user_" + email,
+              JSON.stringify(userData)
+            );
+
+            // Auto login
+            const session = {
+              user: email,
+              fullname: fullname,
+              role: "talent",
+              ts: Date.now(),
+            };
+            localStorage.setItem("bantuin_session", JSON.stringify(session));
+            localStorage.setItem("rpl_currentRole", "talent");
+            alert("Pendaftaran berhasil! Selamat datang di bantu.in");
+            location.href = "beranda.html";
+          }
+        });
+    </script>
+  </body>
+</html>

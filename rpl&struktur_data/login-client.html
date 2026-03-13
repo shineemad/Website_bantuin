@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login Klien - bantu.in</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-body: #ffffff;
+        --bg-alt: #f8f9fa;
+        --text-main: #111111;
+        --text-sub: #666666;
+        --border-color: #e5e7eb;
+        --primary: #000000;
+        --accent-green: #22c55e;
+        --radius-pill: 50px;
+        --radius-card: 20px;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--bg-body);
+        color: var(--text-main);
+      }
+
+      /* LEFT SIDE - Image/Photo */
+      .hero-side {
+        background: #111;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-side::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.7) 0%,
+          rgba(0, 0, 0, 0.5) 100%
+        );
+        z-index: 2;
+      }
+      .hero-image-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+      .slider-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+      .slider-image.active {
+        opacity: 1;
+      }
+      .slider-dots {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 3;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .dot.active {
+        background: #22c55e;
+        width: 30px;
+        border-radius: 5px;
+      }
+
+      /* RIGHT SIDE - Login Form */
+      .form-side {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 60px 80px;
+        background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+        overflow-y: auto;
+      }
+      .form-container {
+        max-width: 460px;
+        width: 100%;
+      }
+      .mobile-logo {
+        display: none;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 32px;
+      }
+      .mobile-logo img {
+        height: 36px;
+      }
+      .mobile-logo .name {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 40px;
+        transition: var(--transition);
+        cursor: pointer;
+      }
+      .back-link:hover {
+        color: var(--primary);
+        gap: 12px;
+      }
+      .form-header {
+        margin-bottom: 40px;
+      }
+      .form-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+        letter-spacing: -1px;
+        color: var(--text-main);
+      }
+      .form-header p {
+        color: var(--text-sub);
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+      .field {
+        margin-bottom: 24px;
+      }
+      label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-main);
+      }
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 16px 18px;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: var(--transition);
+        background: var(--bg-body);
+      }
+      input[type="text"]:focus,
+      input[type="password"]:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+      }
+      input::placeholder {
+        color: #9ca3af;
+      }
+      .role-field {
+        margin-bottom: 32px;
+      }
+      .role-field label {
+        margin-bottom: 12px;
+      }
+      .roles {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .roles button {
+        padding: 16px;
+        border-radius: 12px;
+        border: 2px solid var(--border-color);
+        background: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: var(--transition);
+        color: var(--text-sub);
+        position: relative;
+      }
+      .roles button:hover {
+        border-color: var(--primary);
+        background: var(--bg-alt);
+        transform: translateY(-2px);
+      }
+      .roles button.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+      .roles button.active::after {
+        content: "✓";
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 0.75rem;
+      }
+      .btn {
+        width: 100%;
+        padding: 16px 28px;
+        border-radius: var(--radius-pill);
+        border: 0;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1.05rem;
+        transition: var(--transition);
+        font-family: inherit;
+        margin-top: 8px;
+      }
+      .btn.primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .btn.primary:hover {
+        background: #333;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+      .note {
+        font-size: 0.875rem;
+        color: var(--text-sub);
+        margin-top: 32px;
+        padding: 16px 20px;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        line-height: 1.6;
+      }
+      .note strong {
+        color: var(--text-main);
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        body {
+          grid-template-columns: 1fr;
+        }
+        .hero-side {
+          display: none;
+        }
+        .form-side {
+          padding: 50px 40px;
+          justify-content: flex-start;
+          padding-top: 60px;
+        }
+        .mobile-logo {
+          display: flex;
+        }
+        .back-link {
+          margin-bottom: 32px;
+        }
+      }
+      @media (max-width: 768px) {
+        .form-side {
+          padding: 40px 30px;
+        }
+        .form-header h1 {
+          font-size: 2.2rem;
+        }
+        .form-header p {
+          font-size: 1rem;
+        }
+        .roles {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .roles button {
+          padding: 14px 12px;
+          font-size: 0.9rem;
+        }
+      }
+      @media (max-width: 640px) {
+        .form-side {
+          padding: 30px 24px;
+        }
+        .form-header {
+          margin-bottom: 32px;
+        }
+        .form-header h1 {
+          font-size: 1.875rem;
+        }
+        .form-header p {
+          font-size: 0.95rem;
+        }
+        .back-link {
+          font-size: 0.9rem;
+          margin-bottom: 24px;
+        }
+        .field {
+          margin-bottom: 20px;
+        }
+        input[type="text"],
+        input[type="password"] {
+          padding: 14px 16px;
+          font-size: 0.95rem;
+        }
+        .roles {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .roles button {
+          padding: 14px;
+          font-size: 0.95rem;
+        }
+        .btn {
+          padding: 14px 24px;
+          font-size: 1rem;
+        }
+        .note {
+          font-size: 0.8rem;
+          padding: 14px 16px;
+          margin-top: 24px;
+        }
+      }
+    </style>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/mechanism.js" defer></script>
+  </head>
+  <body>
+    <!-- LEFT SIDE - Image/Photo -->
+    <div class="hero-side">
+      <div class="hero-image-container">
+        <img
+          class="slider-image active"
+          src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&q=80"
+          alt="Business professional"
+        />
+        <img
+          class="slider-image"
+          src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=80"
+          alt="Client meeting"
+        />
+        <img
+          class="slider-image"
+          src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1200&q=80"
+          alt="Professional office"
+        />
+        <img
+          class="slider-image"
+          src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&q=80"
+          alt="Business executive"
+        />
+      </div>
+      <div class="slider-dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+        <span class="dot" data-slide="3"></span>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE - Login Form -->
+    <div class="form-side">
+      <div class="form-container">
+        <div class="mobile-logo">
+          <img src="bantuin.svg" alt="bantu.in logo" />
+          <div class="name">bantu.in</div>
+        </div>
+
+        <div class="form-header">
+          <h1>Selamat Datang, Klien!</h1>
+          <p>Masuk untuk mengelola pekerjaan dan menemukan talent terbaik.</p>
+        </div>
+
+        <div class="field">
+          <label for="username">Username atau Email</label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Masukkan username atau email"
+          />
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Masukkan password"
+          />
+        </div>
+
+        <div class="role-field">
+          <label>Masuk Sebagai</label>
+          <div class="roles" role="tablist">
+            <button type="button" data-role="client" class="role-btn">
+              Klien
+            </button>
+            <button type="button" data-role="talent" class="role-btn">
+              Talent
+            </button>
+            <button type="button" data-role="admin" class="role-btn">
+              Admin
+            </button>
+          </div>
+        </div>
+
+        <button id="loginBtn" class="btn primary">Masuk Sekarang</button>
+
+        <div class="note">
+          <strong>Catatan:</strong> Ini adalah simulasi login. Untuk demo cepat,
+          cukup pilih peran dan tekan "Masuk Sekarang".
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Image Slider
+      const slides = document.querySelectorAll(".slider-image");
+      const dots = document.querySelectorAll(".dot");
+      let currentSlide = 0;
+
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.classList.remove("active");
+          dots[i].classList.remove("active");
+        });
+        slides[index].classList.add("active");
+        dots[index].classList.add("active");
+      }
+
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+      }
+
+      // Auto slide every 4 seconds
+      setInterval(nextSlide, 4000);
+
+      // Manual navigation with dots
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          currentSlide = index;
+          showSlide(currentSlide);
+        });
+      });
+
+      // Enhanced login: if username looks like an email, try RPLAuth login
+      const roleButtons = document.querySelectorAll(".role-btn");
+      let selectedRole = "client";
+      roleButtons.forEach((b, i) => {
+        if (i === 0) b.classList.add("active");
+        b.addEventListener("click", () => {
+          roleButtons.forEach((x) => x.classList.remove("active"));
+          b.classList.add("active");
+          selectedRole = b.dataset.role;
+        });
+      });
+
+      function showMessage(text) {
+        // simple temporary message
+        alert(text);
+      }
+
+      document
+        .getElementById("loginBtn")
+        .addEventListener("click", async () => {
+          const user = document.getElementById("username").value || "";
+          const pass = document.getElementById("password").value || "";
+          const isEmail = user.indexOf("@") !== -1;
+          if (isEmail) {
+            // try real login using RPLAuth
+            const res = await window.RPLAuth.loginUser(
+              user.toLowerCase(),
+              pass
+            );
+            if (!res.success) {
+              // offer redirect to register
+              if (
+                confirm(res.message + "\nIngin mendaftar dengan email ini?")
+              ) {
+                location.href = "register.html";
+              }
+              return;
+            }
+            // logged in -> ensure role selection matches stored role
+            const profile = await window.RPLAuth.getProfile();
+            if (profile && profile.role && profile.role !== selectedRole) {
+              if (
+                confirm(
+                  'Akun ini terdaftar sebagai "' +
+                    profile.role +
+                    '". Masuk sebagai ' +
+                    profile.role +
+                    "?"
+                )
+              ) {
+                selectedRole = profile.role;
+              }
+            }
+            // persist chosen role for this session
+            localStorage.setItem("rpl_currentRole", selectedRole);
+            // logged in -> go to profile
+            location.href = "profile.html";
+            return;
+          }
+
+          // fallback: keep previous simulated session for non-email usernames
+          const session = {
+            user: user || "guest",
+            role: selectedRole,
+            ts: Date.now(),
+          };
+          localStorage.setItem("bantuin_session", JSON.stringify(session));
+          // persist role in new unified key as well
+          localStorage.setItem("rpl_currentRole", selectedRole);
+          if (selectedRole === "admin") {
+            window.location.href = "admin-dashboard.html";
+          } else {
+            // go to profile so user can upload pekerjaan/talent
+            window.location.href = "profile.html";
+          }
+        });
+    </script>
+  </body>
+</html>

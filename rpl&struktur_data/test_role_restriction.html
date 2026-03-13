@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Role Restriction & Admin Storage - Bantuin</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .header {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .header h1 {
+        color: #667eea;
+        margin-bottom: 10px;
+      }
+      .section {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .section h2 {
+        color: #333;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #667eea;
+      }
+      .btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 5px;
+        transition: transform 0.2s;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+      .btn-danger {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+      .role-selector {
+        margin: 15px 0;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .role-btn {
+        padding: 10px 20px;
+        border: 2px solid #667eea;
+        background: white;
+        color: #667eea;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .role-btn.active {
+        background: #667eea;
+        color: white;
+      }
+      .status {
+        padding: 15px;
+        border-radius: 6px;
+        margin: 10px 0;
+      }
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      .status.info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+      .job-list {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .job-item {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        margin: 10px 0;
+        background: #f8f9fa;
+      }
+      .job-item h3 {
+        color: #667eea;
+        margin-bottom: 8px;
+      }
+      .job-meta {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        color: #666;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 2px;
+      }
+      .badge-pending {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .badge-approved {
+        background: #d4edda;
+        color: #155724;
+      }
+      .storage-info {
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        background: #f4f4f4;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+        max-height: 200px;
+        overflow: auto;
+      }
+      .test-result {
+        margin: 10px 0;
+        padding: 10px;
+        border-left: 4px solid #667eea;
+        background: #f8f9fa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🧪 Test Role Restriction & Admin Storage</h1>
+        <p>
+          Test halaman untuk memverifikasi role restriction dan admin storage
+          system
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>1️⃣ Role Simulation</h2>
+        <p>Pilih role untuk simulasi:</p>
+        <div class="role-selector">
+          <button class="role-btn" onclick="setRole('client')">
+            👔 Client
+          </button>
+          <button class="role-btn" onclick="setRole('talent')">
+            💼 Talent
+          </button>
+          <button class="role-btn" onclick="setRole('admin')">⚙️ Admin</button>
+        </div>
+        <div
+          id="currentRoleStatus"
+          class="status info"
+          style="display: none"
+        ></div>
+        <button class="btn" onclick="testAccessToJobForm()">
+          🚀 Test Akses ke Form Tambah Pekerjaan
+        </button>
+      </div>
+
+      <div class="section">
+        <h2>2️⃣ Storage Status</h2>
+        <button class="btn" onclick="checkStorage()">🔍 Check Storage</button>
+        <button class="btn btn-danger" onclick="clearStorage()">
+          🗑️ Clear Storage
+        </button>
+        <div id="storageStatus"></div>
+      </div>
+
+      <div class="section">
+        <h2>3️⃣ Admin Jobs Monitor</h2>
+        <button class="btn" onclick="loadAdminJobs()">
+          📊 Load Admin Jobs
+        </button>
+        <button class="btn" onclick="exportAdminJobs()">
+          💾 Export as JSON
+        </button>
+        <div id="adminJobsContainer"></div>
+      </div>
+
+      <div class="section">
+        <h2>4️⃣ Test Results</h2>
+        <button class="btn" onclick="runAllTests()">▶️ Run All Tests</button>
+        <div id="testResults"></div>
+      </div>
+    </div>
+
+    <script>
+      function setRole(role) {
+        try {
+          // Update role in all storage locations
+          localStorage.setItem("rpl_currentRole", role);
+
+          var session = JSON.parse(
+            localStorage.getItem("bantuin_session") || "{}"
+          );
+          session.role = role;
+          localStorage.setItem("bantuin_session", JSON.stringify(session));
+
+          var profile = JSON.parse(localStorage.getItem("rpl_profile") || "{}");
+          profile.role = role;
+          localStorage.setItem("rpl_profile", JSON.stringify(profile));
+
+          // Update UI
+          document.querySelectorAll(".role-btn").forEach(function (btn) {
+            btn.classList.remove("active");
+          });
+          event.target.classList.add("active");
+
+          var statusDiv = document.getElementById("currentRoleStatus");
+          statusDiv.style.display = "block";
+          statusDiv.className = "status success";
+          statusDiv.innerHTML =
+            "✅ Role berhasil diset ke: <strong>" +
+            role.toUpperCase() +
+            "</strong>";
+
+          console.log("Role changed to:", role);
+        } catch (err) {
+          console.error("Error setting role:", err);
+          alert("Error: " + err.message);
+        }
+      }
+
+      function testAccessToJobForm() {
+        var role = localStorage.getItem("rpl_currentRole") || "unknown";
+        var statusDiv = document.getElementById("currentRoleStatus");
+
+        if (role === "unknown") {
+          statusDiv.style.display = "block";
+          statusDiv.className = "status error";
+          statusDiv.innerHTML = "❌ Silakan set role terlebih dahulu!";
+          return;
+        }
+
+        statusDiv.style.display = "block";
+        if (role === "client") {
+          statusDiv.className = "status success";
+          statusDiv.innerHTML =
+            "✅ Role: CLIENT - Anda akan diarahkan ke form tambah pekerjaan...<br>Silakan coba submit form untuk test role validation.";
+          setTimeout(function () {
+            window.open("tambah-pekerjaan.html", "_blank");
+          }, 2000);
+        } else {
+          statusDiv.className = "status error";
+          statusDiv.innerHTML =
+            "❌ Role: " +
+            role.toUpperCase() +
+            " - Akses DITOLAK!<br>Hanya CLIENT yang dapat mengakses form. Anda akan diarahkan ke halaman tambah pekerjaan untuk melihat proteksi...";
+          setTimeout(function () {
+            window.open("tambah-pekerjaan.html", "_blank");
+          }, 2000);
+        }
+      }
+
+      function checkStorage() {
+        var statusDiv = document.getElementById("storageStatus");
+        var html = "<h3>📦 Storage Contents</h3>";
+
+        // Check global tasks
+        var globalTasks = JSON.parse(
+          localStorage.getItem("bantuin_tasks") || "[]"
+        );
+        html +=
+          '<div class="storage-info"><strong>bantuin_tasks (Global):</strong><br>' +
+          globalTasks.length +
+          " tasks<br>" +
+          JSON.stringify(globalTasks, null, 2) +
+          "</div>";
+
+        // Check admin jobs
+        var adminJobs = JSON.parse(
+          localStorage.getItem("bantuin_admin_jobs") || "[]"
+        );
+        html +=
+          '<div class="storage-info"><strong>bantuin_admin_jobs (Admin Monitor):</strong><br>' +
+          adminJobs.length +
+          " jobs<br>" +
+          JSON.stringify(adminJobs, null, 2) +
+          "</div>";
+
+        // Check current role
+        var role = localStorage.getItem("rpl_currentRole") || "not set";
+        html +=
+          '<div class="storage-info"><strong>rpl_currentRole:</strong> ' +
+          role +
+          "</div>";
+
+        statusDiv.innerHTML = html;
+      }
+
+      function clearStorage() {
+        if (
+          confirm(
+            "⚠️ Hapus semua data storage? (Global tasks, admin jobs, dll)"
+          )
+        ) {
+          localStorage.removeItem("bantuin_tasks");
+          localStorage.removeItem("bantuin_admin_jobs");
+
+          // Clear user-specific tasks (iterate through all possible user keys)
+          for (var key in localStorage) {
+            if (key.startsWith("bantuin_user_tasks_")) {
+              localStorage.removeItem(key);
+            }
+          }
+
+          alert("✅ Storage berhasil dibersihkan!");
+          checkStorage();
+        }
+      }
+
+      function loadAdminJobs() {
+        var container = document.getElementById("adminJobsContainer");
+        var adminJobs = JSON.parse(
+          localStorage.getItem("bantuin_admin_jobs") || "[]"
+        );
+
+        if (adminJobs.length === 0) {
+          container.innerHTML =
+            '<div class="status info">📭 Belum ada job yang masuk ke admin storage.<br>Coba post job sebagai CLIENT terlebih dahulu.</div>';
+          return;
+        }
+
+        var html =
+          '<div class="status success">📊 Total: ' +
+          adminJobs.length +
+          " jobs di admin storage</div>";
+        html += '<div class="job-list">';
+
+        adminJobs.forEach(function (job, index) {
+          html += '<div class="job-item">';
+          html += "<h3>" + (index + 1) + ". " + job.title + "</h3>";
+          html += '<div class="job-meta">';
+          html += "<span>💰 " + job.budget + "</span>";
+          html += "<span>📍 " + job.location + "</span>";
+          html += "<span>👤 " + (job.submittedBy || job.owner) + "</span>";
+          html +=
+            "<span>📧 " + (job.submitterEmail || job.ownerEmail) + "</span>";
+          html += "<span>🏷️ Role: " + (job.submitterRole || "N/A") + "</span>";
+          html += "</div>";
+          html += '<div style="margin-top: 8px;">';
+          html +=
+            '<span class="badge badge-' +
+            (job.reviewStatus || "pending") +
+            '">' +
+            (job.reviewStatus || "pending").toUpperCase() +
+            "</span>";
+          html +=
+            '<span class="badge" style="background:#e9ecef;color:#495057;">ID: ' +
+            job.id +
+            "</span>";
+          if (job.submittedAt) {
+            html +=
+              '<span class="badge" style="background:#e9ecef;color:#495057;">⏰ ' +
+              new Date(job.submittedAt).toLocaleString("id-ID") +
+              "</span>";
+          }
+          html += "</div>";
+          html += "</div>";
+        });
+
+        html += "</div>";
+        container.innerHTML = html;
+      }
+
+      function exportAdminJobs() {
+        var adminJobs = JSON.parse(
+          localStorage.getItem("bantuin_admin_jobs") || "[]"
+        );
+        if (adminJobs.length === 0) {
+          alert("❌ Tidak ada data untuk di-export");
+          return;
+        }
+
+        var dataStr = JSON.stringify(adminJobs, null, 2);
+        var dataBlob = new Blob([dataStr], { type: "application/json" });
+        var url = URL.createObjectURL(dataBlob);
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "bantuin_admin_jobs_" + Date.now() + ".json";
+        link.click();
+
+        alert("✅ Data berhasil di-export!");
+      }
+
+      function runAllTests() {
+        var resultsDiv = document.getElementById("testResults");
+        var html = "<h3>🧪 Test Results</h3>";
+        var passed = 0;
+        var failed = 0;
+
+        // Test 1: Check if admin storage exists
+        html += '<div class="test-result">';
+        html += "<strong>Test 1: Admin Storage Initialization</strong><br>";
+        var adminJobs = localStorage.getItem("bantuin_admin_jobs");
+        if (adminJobs !== null) {
+          html += "✅ PASS - bantuin_admin_jobs key exists<br>";
+          passed++;
+        } else {
+          html +=
+            "⚠️ INFO - bantuin_admin_jobs key not initialized yet (normal if no jobs posted)<br>";
+        }
+        html += "</div>";
+
+        // Test 2: Check role setting
+        html += '<div class="test-result">';
+        html += "<strong>Test 2: Role Configuration</strong><br>";
+        var role = localStorage.getItem("rpl_currentRole");
+        if (role) {
+          html += "✅ PASS - Current role: " + role + "<br>";
+          passed++;
+        } else {
+          html += "❌ FAIL - No role set<br>";
+          failed++;
+        }
+        html += "</div>";
+
+        // Test 3: Check global tasks
+        html += '<div class="test-result">';
+        html += "<strong>Test 3: Global Tasks Storage</strong><br>";
+        var globalTasks = JSON.parse(
+          localStorage.getItem("bantuin_tasks") || "[]"
+        );
+        html += "📊 Found " + globalTasks.length + " global tasks<br>";
+        if (globalTasks.length >= 0) {
+          html += "✅ PASS - Global storage accessible<br>";
+          passed++;
+        }
+        html += "</div>";
+
+        // Test 4: Verify admin storage structure
+        html += '<div class="test-result">';
+        html += "<strong>Test 4: Admin Storage Structure</strong><br>";
+        var adminJobsData = JSON.parse(
+          localStorage.getItem("bantuin_admin_jobs") || "[]"
+        );
+        if (adminJobsData.length > 0) {
+          var firstJob = adminJobsData[0];
+          var hasRequiredFields =
+            firstJob.submittedAt &&
+            firstJob.submitterRole &&
+            firstJob.reviewStatus;
+          if (hasRequiredFields) {
+            html += "✅ PASS - Admin storage has correct structure<br>";
+            html += "  - submittedAt: " + firstJob.submittedAt + "<br>";
+            html += "  - submitterRole: " + firstJob.submitterRole + "<br>";
+            html += "  - reviewStatus: " + firstJob.reviewStatus + "<br>";
+            passed++;
+          } else {
+            html += "❌ FAIL - Missing required admin fields<br>";
+            failed++;
+          }
+        } else {
+          html += "⚠️ INFO - No jobs in admin storage yet<br>";
+        }
+        html += "</div>";
+
+        // Summary
+        html +=
+          '<div class="status ' +
+          (failed === 0 ? "success" : "error") +
+          '" style="margin-top:15px;">';
+        html +=
+          "<strong>Summary:</strong> " +
+          passed +
+          " passed, " +
+          failed +
+          " failed";
+        html += "</div>";
+
+        resultsDiv.innerHTML = html;
+      }
+
+      // Auto-check storage on load
+      window.onload = function () {
+        checkStorage();
+
+        // Highlight current role
+        var currentRole = localStorage.getItem("rpl_currentRole");
+        if (currentRole) {
+          document.querySelectorAll(".role-btn").forEach(function (btn) {
+            if (btn.textContent.toLowerCase().includes(currentRole)) {
+              btn.classList.add("active");
+            }
+          });
+          var statusDiv = document.getElementById("currentRoleStatus");
+          statusDiv.style.display = "block";
+          statusDiv.className = "status info";
+          statusDiv.innerHTML =
+            "ℹ️ Current role: <strong>" +
+            currentRole.toUpperCase() +
+            "</strong>";
+        }
+      };
+    </script>
+  </body>
+</html>

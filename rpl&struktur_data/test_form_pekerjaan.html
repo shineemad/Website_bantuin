@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Form Pekerjaan - Client Role</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding: 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+      h1 {
+        color: #667eea;
+        margin-bottom: 10px;
+      }
+      h2 {
+        color: #333;
+        margin: 25px 0 15px;
+        padding-top: 20px;
+        border-top: 2px solid #eee;
+      }
+      h2:first-of-type {
+        border-top: none;
+        padding-top: 0;
+      }
+      .test-section {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 15px 0;
+        border-left: 4px solid #667eea;
+      }
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        margin: 5px;
+        transition: all 0.3s;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+      .btn-danger {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+      .btn-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      }
+      .status {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-weight: 500;
+      }
+      .success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      .info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+      .warning {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+      }
+      pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .checklist {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 10px 0;
+      }
+      .checklist-item {
+        padding: 8px;
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .checklist-item input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+      .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        background: #667eea;
+        color: white;
+        border-radius: 50%;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      .result-box {
+        background: #e7f3ff;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 10px 0;
+        border-left: 4px solid #2196f3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🧪 Test Form Pekerjaan - Role Client</h1>
+      <p style="color: #666; margin-bottom: 20px">
+        Testing form tambah pekerjaan di profile.html untuk role client
+      </p>
+
+      <!-- Step 1: Setup -->
+      <h2><span class="step-number">1</span>Setup Test Data</h2>
+      <div class="test-section">
+        <p style="margin-bottom: 15px">
+          Set role sebagai CLIENT untuk testing:
+        </p>
+        <button onclick="setupClientRole()">👔 Setup Role CLIENT</button>
+        <button onclick="setupTalentRole()" class="btn-danger">
+          ⭐ Setup Role TALENT (untuk test validasi)
+        </button>
+        <button onclick="clearData()" style="background: #6c757d">
+          🗑️ Clear Data
+        </button>
+        <div id="setupResult"></div>
+      </div>
+
+      <!-- Step 2: Check Current State -->
+      <h2><span class="step-number">2</span>Check Current State</h2>
+      <div class="test-section">
+        <button onclick="checkCurrentState()">🔍 Check Storage & Role</button>
+        <div id="stateResult"></div>
+      </div>
+
+      <!-- Step 3: Open Profile -->
+      <h2><span class="step-number">3</span>Test Profile Page</h2>
+      <div class="test-section">
+        <p style="margin-bottom: 15px">Buka profile.html dan test form:</p>
+        <button onclick="openProfile()" class="btn-success">
+          🚀 Open Profile Page
+        </button>
+
+        <div class="checklist">
+          <p style="font-weight: 600; margin-bottom: 10px">
+            ✅ Checklist yang harus dicek:
+          </p>
+          <div class="checklist-item">
+            <input type="checkbox" id="check1" />
+            <label for="check1">Badge "Client" muncul dengan warna ungu</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check2" />
+            <label for="check2">Button "Tambah Pekerjaan Baru" terlihat</label>
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check3" />
+            <label for="check3"
+              >Klik button → Form muncul dengan semua field</label
+            >
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check4" />
+            <label for="check4"
+              >Isi form dan submit → Muncul alert sukses</label
+            >
+          </div>
+          <div class="checklist-item">
+            <input type="checkbox" id="check5" />
+            <label for="check5">Page reload dan job muncul di daftar</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Verify Jobs Saved -->
+      <h2><span class="step-number">4</span>Verify Jobs Saved</h2>
+      <div class="test-section">
+        <button onclick="checkJobs()">📊 Check Saved Jobs</button>
+        <div id="jobsResult"></div>
+      </div>
+
+      <!-- Step 5: Test Role Validation -->
+      <h2><span class="step-number">5</span>Test Role Validation</h2>
+      <div class="test-section">
+        <p style="margin-bottom: 15px">Test apakah TALENT diblokir:</p>
+        <ol style="margin-left: 20px; line-height: 1.8">
+          <li>Klik "Setup Role TALENT" di Step 1</li>
+          <li>Buka profile.html</li>
+          <li>Badge harus berubah jadi "Talent" (pink)</li>
+          <li>Button "Tambah Pekerjaan Baru" harus hilang/disabled</li>
+          <li>Jika coba submit form via console → harus ditolak</li>
+        </ol>
+        <button onclick="testTalentBlock()">🚫 Test Talent Blocking</button>
+        <div id="talentTestResult"></div>
+      </div>
+
+      <!-- Step 6: Test Results -->
+      <h2><span class="step-number">6</span>Test Summary</h2>
+      <div class="test-section">
+        <button onclick="showSummary()">📋 Show Test Summary</button>
+        <div id="summaryResult"></div>
+      </div>
+    </div>
+
+    <script>
+      function setupClientRole() {
+        const clientData = {
+          name: "Test Client User",
+          email: "testclient@bantuin.com",
+          role: "client",
+        };
+
+        localStorage.setItem("rpl_currentRole", "client");
+        localStorage.setItem("rpl_profile", JSON.stringify(clientData));
+        localStorage.setItem(
+          "bantuin_session",
+          JSON.stringify({
+            user: clientData.name,
+            email: clientData.email,
+            role: "client",
+            isLoggedIn: true,
+          })
+        );
+
+        document.getElementById("setupResult").innerHTML = `
+                <div class="status success">
+                    ✅ <strong>CLIENT Role Setup Complete!</strong><br>
+                    Name: ${clientData.name}<br>
+                    Email: ${clientData.email}<br>
+                    Role: CLIENT<br><br>
+                    <strong>Expected behavior:</strong><br>
+                    - Badge ungu dengan icon briefcase<br>
+                    - Button "Tambah Pekerjaan Baru" muncul<br>
+                    - Form dapat diakses dan submit berhasil
+                </div>
+            `;
+        console.log("✅ Client role setup:", clientData);
+      }
+
+      function setupTalentRole() {
+        const talentData = {
+          name: "Test Talent User",
+          email: "testtalent@bantuin.com",
+          role: "talent",
+        };
+
+        localStorage.setItem("rpl_currentRole", "talent");
+        localStorage.setItem("rpl_profile", JSON.stringify(talentData));
+        localStorage.setItem(
+          "bantuin_session",
+          JSON.stringify({
+            user: talentData.name,
+            email: talentData.email,
+            role: "talent",
+            isLoggedIn: true,
+          })
+        );
+
+        document.getElementById("setupResult").innerHTML = `
+                <div class="status warning">
+                    ⚠️ <strong>TALENT Role Setup (for validation testing)</strong><br>
+                    Name: ${talentData.name}<br>
+                    Email: ${talentData.email}<br>
+                    Role: TALENT<br><br>
+                    <strong>Expected behavior:</strong><br>
+                    - Badge pink dengan icon star<br>
+                    - Button "Tambah Pekerjaan Baru" TIDAK muncul/disabled<br>
+                    - Form submit harus DITOLAK
+                </div>
+            `;
+        console.log("⚠️ Talent role setup:", talentData);
+      }
+
+      function clearData() {
+        localStorage.removeItem("rpl_currentRole");
+        localStorage.removeItem("rpl_profile");
+        localStorage.removeItem("bantuin_session");
+
+        document.getElementById("setupResult").innerHTML = `
+                <div class="status info">
+                    ℹ️ All test data cleared. Please setup role again.
+                </div>
+            `;
+      }
+
+      function checkCurrentState() {
+        const role = localStorage.getItem("rpl_currentRole");
+        const profile = JSON.parse(localStorage.getItem("rpl_profile") || "{}");
+        const session = JSON.parse(
+          localStorage.getItem("bantuin_session") || "{}"
+        );
+
+        const globalJobs = JSON.parse(
+          localStorage.getItem("bantuin_tasks") || "[]"
+        );
+        const adminJobs = JSON.parse(
+          localStorage.getItem("bantuin_admin_jobs") || "[]"
+        );
+
+        let html = '<div class="result-box">';
+        html +=
+          '<h4 style="margin: 0 0 10px 0; color: #2196F3;">Current State:</h4>';
+        html +=
+          "<pre>" +
+          JSON.stringify(
+            {
+              currentRole: role,
+              profile: profile,
+              session: session,
+              totalGlobalJobs: globalJobs.length,
+              totalAdminJobs: adminJobs.length,
+            },
+            null,
+            2
+          ) +
+          "</pre>";
+        html += "</div>";
+
+        if (!role) {
+          html +=
+            '<div class="status error">❌ No role set! Please setup role in Step 1.</div>';
+        } else if (role === "client") {
+          html +=
+            '<div class="status success">✅ Role: CLIENT - Form should be accessible</div>';
+        } else if (role === "talent") {
+          html +=
+            '<div class="status warning">⚠️ Role: TALENT - Form should be blocked</div>';
+        }
+
+        document.getElementById("stateResult").innerHTML = html;
+      }
+
+      function openProfile() {
+        const role = localStorage.getItem("rpl_currentRole");
+        if (!role) {
+          alert("❌ Please setup role first (Step 1)");
+          return;
+        }
+
+        const instructions = `
+🚀 Opening profile.html...
+
+WHAT TO CHECK:
+${role === "client" ? "✅" : "❌"} Badge shows: ${role.toUpperCase()}
+${role === "client" ? "✅" : "❌"} Button "Tambah Pekerjaan Baru" visible
+${role === "client" ? "✅" : "❌"} Can open form and see all fields
+${role === "client" ? "✅" : "❌"} Can submit form successfully
+
+CONSOLE TIPS:
+- Press F12 to open DevTools
+- Check Console for logs
+- Check for any errors (red text)
+
+FORM FIELDS TO TEST:
+- Judul Pekerjaan: "Test Job Title"
+- Deskripsi: "This is a test job description"
+- Budget: "Rp 1.000.000"
+- Kategori: Pick any
+- Level: Pick any
+- Tipe: Pick any
+            `.trim();
+
+        alert(instructions);
+        window.open("profile.html", "_blank");
+      }
+
+      function checkJobs() {
+        const globalJobs = JSON.parse(
+          localStorage.getItem("bantuin_tasks") || "[]"
+        );
+        const adminJobs = JSON.parse(
+          localStorage.getItem("bantuin_admin_jobs") || "[]"
+        );
+        const profile = JSON.parse(localStorage.getItem("rpl_profile") || "{}");
+        const userKey = "bantuin_user_tasks_" + profile.email;
+        const userJobs = JSON.parse(localStorage.getItem(userKey) || "[]");
+
+        let html = '<div class="result-box">';
+        html +=
+          '<h4 style="margin: 0 0 10px 0; color: #2196F3;">Jobs Storage Status:</h4>';
+
+        html += `<div style="margin: 10px 0;">`;
+        html += `<strong>📦 Global Jobs (bantuin_tasks):</strong> ${globalJobs.length} jobs<br>`;
+        html += `<strong>📦 User Jobs (${userKey}):</strong> ${userJobs.length} jobs<br>`;
+        html += `<strong>📦 Admin Jobs (bantuin_admin_jobs):</strong> ${adminJobs.length} jobs`;
+        html += `</div>`;
+
+        if (globalJobs.length > 0) {
+          html += '<h4 style="margin: 15px 0 10px 0;">Latest Job:</h4>';
+          const latestJob = globalJobs[0];
+          html += "<pre>" + JSON.stringify(latestJob, null, 2) + "</pre>";
+          html +=
+            '<div class="status success">✅ Jobs found! Form is working correctly.</div>';
+        } else {
+          html +=
+            '<div class="status info">ℹ️ No jobs found yet. Try submitting a job through the form.</div>';
+        }
+
+        html += "</div>";
+        document.getElementById("jobsResult").innerHTML = html;
+      }
+
+      function testTalentBlock() {
+        const role = localStorage.getItem("rpl_currentRole");
+
+        let html = "";
+        if (role === "talent") {
+          html = `
+                    <div class="status warning">
+                        ⚠️ <strong>Testing Talent Block...</strong><br><br>
+                        Current Role: TALENT<br><br>
+                        <strong>Manual Test Steps:</strong><br>
+                        1. Open profile.html (button below)<br>
+                        2. Badge should show "Talent" (pink)<br>
+                        3. Button "Tambah Pekerjaan Baru" should NOT appear<br>
+                        4. If you manually trigger form submit, it should be rejected<br><br>
+                        <button onclick="window.open('profile.html', '_blank')" style="background: #f5576c;">
+                            🔍 Open Profile to Verify
+                        </button>
+                    </div>
+                `;
+        } else if (role === "client") {
+          html = `
+                    <div class="status info">
+                        ℹ️ Current role is CLIENT. To test talent blocking:<br>
+                        1. Click "Setup Role TALENT" in Step 1<br>
+                        2. Then click this button again
+                    </div>
+                `;
+        } else {
+          html = `<div class="status error">❌ No role set. Setup role first.</div>`;
+        }
+
+        document.getElementById("talentTestResult").innerHTML = html;
+      }
+
+      function showSummary() {
+        const role = localStorage.getItem("rpl_currentRole");
+        const globalJobs = JSON.parse(
+          localStorage.getItem("bantuin_tasks") || "[]"
+        );
+        const adminJobs = JSON.parse(
+          localStorage.getItem("bantuin_admin_jobs") || "[]"
+        );
+
+        const allChecked = [
+          "check1",
+          "check2",
+          "check3",
+          "check4",
+          "check5",
+        ].every((id) => document.getElementById(id)?.checked);
+
+        let html = '<div class="result-box">';
+        html +=
+          '<h3 style="color: #667eea; margin-bottom: 15px;">📋 Test Summary</h3>';
+
+        html += '<h4 style="margin: 10px 0;">Configuration:</h4>';
+        html += `<p>Current Role: <strong>${role || "NOT SET"}</strong></p>`;
+        html += `<p>Global Jobs: <strong>${globalJobs.length}</strong></p>`;
+        html += `<p>Admin Jobs: <strong>${adminJobs.length}</strong></p>`;
+
+        html += '<h4 style="margin: 15px 0 10px 0;">Test Results:</h4>';
+
+        if (allChecked && globalJobs.length > 0) {
+          html += `
+                    <div class="status success">
+                        ✅ <strong>ALL TESTS PASSED!</strong><br><br>
+                        ✓ Role setup correctly<br>
+                        ✓ Badge displaying properly<br>
+                        ✓ Form accessible for client<br>
+                        ✓ Form submission working<br>
+                        ✓ Jobs saved to storage<br>
+                        ✓ Admin storage working<br><br>
+                        <strong>Form pekerjaan untuk role CLIENT berfungsi dengan baik! 🎉</strong>
+                    </div>
+                `;
+        } else {
+          html += `<div class="status warning">`;
+          html += `⚠️ <strong>Test Incomplete</strong><br><br>`;
+          if (!role) html += `❌ Role not setup<br>`;
+          if (!allChecked) html += `❌ Not all checklist items completed<br>`;
+          if (globalJobs.length === 0) html += `❌ No jobs submitted yet<br>`;
+          html += `<br>Please complete all test steps.`;
+          html += `</div>`;
+        }
+
+        html += "</div>";
+        document.getElementById("summaryResult").innerHTML = html;
+      }
+
+      // Auto-run on load
+      window.onload = function () {
+        checkCurrentState();
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pilih Peran - bantu.in</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --bg-body: #ffffff;
+        --bg-alt: #f8f9fa;
+        --text-main: #111111;
+        --text-sub: #666666;
+        --border-color: #e5e7eb;
+        --primary: #000000;
+        --accent-green: #22c55e;
+        --radius-pill: 50px;
+        --radius-card: 20px;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--bg-body);
+        color: var(--text-main);
+      }
+
+      /* LEFT SIDE - Image/Photo */
+      .hero-side {
+        background: #111;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-side::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.7) 0%,
+          rgba(0, 0, 0, 0.5) 100%
+        );
+        z-index: 2;
+      }
+      .hero-image-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+      .slider-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+      .slider-image.active {
+        opacity: 1;
+      }
+      .slider-dots {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 3;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .dot.active {
+        background: #22c55e;
+        width: 30px;
+        border-radius: 5px;
+      }
+
+      /* RIGHT SIDE - Role Selection */
+      .form-side {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 60px 80px;
+        background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+        overflow-y: auto;
+      }
+      .form-container {
+        max-width: 460px;
+        width: 100%;
+      }
+      .mobile-logo {
+        display: none;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 32px;
+      }
+      .mobile-logo img {
+        height: 36px;
+      }
+      .mobile-logo .name {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 40px;
+        transition: var(--transition);
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .back-link:hover {
+        color: var(--primary);
+        gap: 12px;
+      }
+      .form-header {
+        margin-bottom: 40px;
+      }
+      .form-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+        letter-spacing: -1px;
+        color: var(--text-main);
+      }
+      .form-header p {
+        color: var(--text-sub);
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+
+      /* Role Cards */
+      .role-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .role-card {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 24px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-card);
+        background: #fff;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        color: inherit;
+      }
+      .role-card:hover {
+        border-color: var(--primary);
+        background: var(--bg-alt);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+      .role-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--primary);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .role-content {
+        flex: 1;
+      }
+      .role-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: var(--text-main);
+      }
+      .role-description {
+        font-size: 0.95rem;
+        color: var(--text-sub);
+        line-height: 1.5;
+      }
+      .role-arrow {
+        font-size: 1.2rem;
+        color: var(--text-sub);
+        transition: var(--transition);
+      }
+      .role-card:hover .role-arrow {
+        transform: translateX(5px);
+        color: var(--primary);
+      }
+
+      .register-link {
+        text-align: center;
+        margin-top: 24px;
+        font-size: 0.95rem;
+        color: var(--text-sub);
+      }
+      .register-link a {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: underline;
+      }
+      .register-link a:hover {
+        color: #333;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        body {
+          grid-template-columns: 1fr;
+        }
+        .hero-side {
+          display: none;
+        }
+        .form-side {
+          padding: 50px 40px;
+          justify-content: flex-start;
+          padding-top: 60px;
+        }
+        .mobile-logo {
+          display: flex;
+        }
+        .back-link {
+          margin-bottom: 32px;
+        }
+      }
+      @media (max-width: 768px) {
+        .form-side {
+          padding: 40px 30px;
+        }
+        .form-header h1 {
+          font-size: 2.2rem;
+        }
+        .form-header p {
+          font-size: 1rem;
+        }
+      }
+      @media (max-width: 640px) {
+        .form-side {
+          padding: 30px 24px;
+        }
+        .form-header {
+          margin-bottom: 32px;
+        }
+        .form-header h1 {
+          font-size: 1.875rem;
+        }
+        .form-header p {
+          font-size: 0.95rem;
+        }
+        .back-link {
+          font-size: 0.9rem;
+          margin-bottom: 24px;
+        }
+        .role-card {
+          padding: 20px;
+        }
+        .role-icon {
+          width: 48px;
+          height: 48px;
+          font-size: 1.3rem;
+        }
+        .role-title {
+          font-size: 1.1rem;
+        }
+        .role-description {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- LEFT SIDE - Image/Photo -->
+    <div class="hero-side">
+      <div class="hero-image-container">
+        <img
+          class="slider-image active"
+          src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80"
+          alt="Team collaboration"
+        />
+        <img
+          class="slider-image"
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80"
+          alt="Team meeting"
+        />
+        <img
+          class="slider-image"
+          src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80"
+          alt="Professional workspace"
+        />
+        <img
+          class="slider-image"
+          src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&q=80"
+          alt="Creative team"
+        />
+      </div>
+      <div class="slider-dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+        <span class="dot" data-slide="3"></span>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE - Role Selection -->
+    <div class="form-side">
+      <div class="form-container">
+        <div class="mobile-logo">
+          <img src="bantuin.svg" alt="bantu.in logo" />
+          <div class="name">bantu.in</div>
+        </div>
+
+        <a href="beranda.html" class="back-link">
+          <i class="fas fa-arrow-left"></i>
+          <span>Kembali ke Beranda</span>
+        </a>
+
+        <div class="form-header">
+          <h1>Pilih Peran Anda</h1>
+          <p>
+            Pilih bagaimana Anda ingin bergabung dengan bantu.in untuk memulai
+            perjalanan Anda.
+          </p>
+        </div>
+
+        <div class="role-cards">
+          <a href="register-talent.html" class="role-card">
+            <div class="role-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="role-content">
+              <div class="role-title">Saya Mencari Pekerjaan</div>
+              <div class="role-description">
+                Daftar sebagai talent untuk menemukan pekerjaan yang sesuai
+                dengan keahlian Anda.
+              </div>
+            </div>
+            <i class="fas fa-arrow-right role-arrow"></i>
+          </a>
+
+          <a href="register-client.html" class="role-card">
+            <div class="role-icon">
+              <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="role-content">
+              <div class="role-title">Saya Menawarkan Pekerjaan</div>
+              <div class="role-description">
+                Daftar sebagai client untuk memposting lowongan dan menemukan
+                talent terbaik.
+              </div>
+            </div>
+            <i class="fas fa-arrow-right role-arrow"></i>
+          </a>
+        </div>
+
+        <div class="register-link">
+          Sudah punya akun? <a href="login.html">Masuk di sini</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Image Slider
+      const slides = document.querySelectorAll(".slider-image");
+      const dots = document.querySelectorAll(".dot");
+      let currentSlide = 0;
+
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.classList.remove("active");
+          dots[i].classList.remove("active");
+        });
+        slides[index].classList.add("active");
+        dots[index].classList.add("active");
+      }
+
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+      }
+
+      // Auto slide every 4 seconds
+      setInterval(nextSlide, 4000);
+
+      // Manual navigation with dots
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          currentSlide = index;
+          showSlide(currentSlide);
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Test - Profile Badge</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .test-box {
+        background: white;
+        padding: 20px;
+        margin: 10px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 5px;
+        font-size: 14px;
+      }
+      button:hover {
+        background: #5568d3;
+      }
+      .success {
+        color: #22c55e;
+        font-weight: bold;
+      }
+      .error {
+        color: #ef4444;
+        font-weight: bold;
+      }
+      pre {
+        background: #f8f8f8;
+        padding: 10px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🧪 Quick Test - Profile Badge System</h1>
+
+    <div class="test-box">
+      <h2>Step 1: Setup Test Data</h2>
+      <button onclick="setupClient()">👔 Setup Client</button>
+      <button onclick="setupTalent()">⭐ Setup Talent</button>
+      <div id="setupResult"></div>
+    </div>
+
+    <div class="test-box">
+      <h2>Step 2: Check Current Data</h2>
+      <button onclick="checkData()">🔍 Check Data</button>
+      <pre id="dataResult">Click button to check...</pre>
+    </div>
+
+    <div class="test-box">
+      <h2>Step 3: Open Profile Page</h2>
+      <button onclick="openProfile()">🚀 Open Profile Page</button>
+      <p>Badge should appear below the name with appropriate color and icon</p>
+    </div>
+
+    <div class="test-box">
+      <h2>Step 4: Clear Data</h2>
+      <button onclick="clearData()">🗑️ Clear All Data</button>
+    </div>
+
+    <script>
+      function setupClient() {
+        const data = {
+          name: "John Client",
+          email: "client@test.com",
+          role: "client",
+        };
+
+        localStorage.setItem("rpl_currentRole", "client");
+        localStorage.setItem("rpl_profile", JSON.stringify(data));
+        localStorage.setItem(
+          "bantuin_session",
+          JSON.stringify({
+            user: data.name,
+            email: data.email,
+            role: "client",
+            isLoggedIn: true,
+          })
+        );
+
+        document.getElementById("setupResult").innerHTML =
+          '<p class="success">✅ Client data setup complete!</p>' +
+          "<p>Name: " +
+          data.name +
+          "<br>Role: CLIENT<br>Expected badge: Purple gradient with briefcase icon</p>";
+      }
+
+      function setupTalent() {
+        const data = {
+          name: "Jane Talent",
+          email: "talent@test.com",
+          role: "talent",
+        };
+
+        localStorage.setItem("rpl_currentRole", "talent");
+        localStorage.setItem("rpl_profile", JSON.stringify(data));
+        localStorage.setItem(
+          "bantuin_session",
+          JSON.stringify({
+            user: data.name,
+            email: data.email,
+            role: "talent",
+            isLoggedIn: true,
+          })
+        );
+
+        document.getElementById("setupResult").innerHTML =
+          '<p class="success">✅ Talent data setup complete!</p>' +
+          "<p>Name: " +
+          data.name +
+          "<br>Role: TALENT<br>Expected badge: Pink gradient with star icon</p>";
+      }
+
+      function checkData() {
+        const currentRole = localStorage.getItem("rpl_currentRole");
+        const profile = localStorage.getItem("rpl_profile");
+        const session = localStorage.getItem("bantuin_session");
+
+        const result = {
+          currentRole: currentRole,
+          profile: profile ? JSON.parse(profile) : null,
+          session: session ? JSON.parse(session) : null,
+        };
+
+        document.getElementById("dataResult").textContent = JSON.stringify(
+          result,
+          null,
+          2
+        );
+
+        if (!currentRole) {
+          document.getElementById("dataResult").innerHTML +=
+            '\n\n<span class="error">⚠️ No role set! Please setup test data first.</span>';
+        } else {
+          document.getElementById("dataResult").innerHTML +=
+            '\n\n<span class="success">✅ Data looks good! Role: ' +
+            currentRole +
+            "</span>";
+        }
+      }
+
+      function openProfile() {
+        const role = localStorage.getItem("rpl_currentRole");
+        if (!role) {
+          alert("❌ Please setup test data first (Step 1)");
+          return;
+        }
+
+        window.open("profile.html", "_blank");
+        alert(
+          "✅ Profile page opened!\n\nCheck for:\n- Badge below name\n- Correct color (purple=client, pink=talent)\n- Icon (briefcase=client, star=talent)\n\nOpen browser console (F12) to see debug logs"
+        );
+      }
+
+      function clearData() {
+        if (confirm("Clear all test data?")) {
+          localStorage.removeItem("rpl_currentRole");
+          localStorage.removeItem("rpl_profile");
+          localStorage.removeItem("bantuin_session");
+
+          document.getElementById("setupResult").innerHTML =
+            '<p class="success">✅ Data cleared</p>';
+          document.getElementById("dataResult").textContent = "Data cleared";
+        }
+      }
+
+      // Auto-check on load
+      window.onload = function () {
+        checkData();
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test Badge</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        padding: 40px;
+        font-family: Arial;
+        background: #f0f0f0;
+      }
+      .card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        max-width: 500px;
+        margin: 0 auto;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 10px 0;
+      }
+      .role-badge-client {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .role-badge-talent {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+      }
+      button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      .result {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>🧪 Test Badge Functionality</h2>
+
+      <div style="margin: 20px 0">
+        <button onclick="testClient()">Test CLIENT Badge</button>
+        <button onclick="testTalent()">Test TALENT Badge</button>
+      </div>
+
+      <div id="result" class="result">
+        <p>Click a button above to test badge</p>
+      </div>
+
+      <div
+        style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee"
+      >
+        <button onclick="openProfilePage()" style="background: #22c55e">
+          Open Profile Page →
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function testClient() {
+        // Set client role
+        localStorage.setItem("rpl_currentRole", "client");
+        localStorage.setItem(
+          "rpl_profile",
+          JSON.stringify({
+            name: "Test Client",
+            email: "client@test.com",
+            role: "client",
+          })
+        );
+
+        // Show result
+        document.getElementById("result").innerHTML = `
+                <h3>✅ CLIENT Badge Test</h3>
+                <div class="role-badge role-badge-client">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Client</span>
+                </div>
+                <p><strong>Expected:</strong> Purple gradient badge with briefcase icon</p>
+                <p><strong>Status:</strong> Data saved to localStorage</p>
+            `;
+      }
+
+      function testTalent() {
+        // Set talent role
+        localStorage.setItem("rpl_currentRole", "talent");
+        localStorage.setItem(
+          "rpl_profile",
+          JSON.stringify({
+            name: "Test Talent",
+            email: "talent@test.com",
+            role: "talent",
+          })
+        );
+
+        // Show result
+        document.getElementById("result").innerHTML = `
+                <h3>✅ TALENT Badge Test</h3>
+                <div class="role-badge role-badge-talent">
+                    <i class="fas fa-star"></i>
+                    <span>Talent</span>
+                </div>
+                <p><strong>Expected:</strong> Pink gradient badge with star icon</p>
+                <p><strong>Status:</strong> Data saved to localStorage</p>
+            `;
+      }
+
+      function openProfilePage() {
+        const role = localStorage.getItem("rpl_currentRole");
+        if (!role) {
+          alert("⚠️ Please test a badge first!");
+          return;
+        }
+
+        alert(
+          '✅ Opening profile.html...\n\nLook for the badge below the name!\n\nPress F12 to open Console and check for:\n- "Profile loaded - Current role: ' +
+            role +
+            '"\n- "✅ Role badge created: ..."'
+        );
+        window.open("profile.html", "_blank");
+      }
+    </script>
+  </body>
+</html>
